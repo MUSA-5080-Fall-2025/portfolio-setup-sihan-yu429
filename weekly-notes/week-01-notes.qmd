@@ -4,12 +4,36 @@ date: "2025-09-08"
 ---
 
 ## Key Concepts Learned
-- [List main concepts from lecture]
-- [Technical skills covered]
+- Git is a version control system and GitHub is the cloud hosting of Git repositories.
+-key concept in GitHub
+  Repository (repo): Folder containing your project files
+  Commit: Snapshot of your work at a point in time
+  Push: Send your changes to GitHub cloud
+  Pull: Get latest changes from GitHub cloud
 
 ## Coding Techniques
 - [New R functions or approaches]
+Tidyverse packages - table-> tibbles
+library(tidyverse) to install 
+Read in the tibbles: Car_data <- read_csv(weara.csv)
+glimpse(car_data)
+Select <- (name of the data,  the column name, column2)                  resign
+filter(fga)  - not be saved
+Old_cars <- filter(car_data, oldcars == ‘old’)                           
+ us & for multi conditions- and;  | for or
+mutate(name of the data, new column name = prices/1000)           add to table
+Data_name <- rename(data_name, new name = ‘old name’)          rename column
+Single quote if the old name contain space
+new_data <- select(new_data, -select)                                             remove column
+In the new name area:
+Oldcars = case_when(age >20~“old”, TRUE ~ “not old”)                recode variables
+Group by and summarize always go together
+Avg_manufacturer <- car_data %>%
+	group_by (manufacturer)%>%summarize(ave_price = mean(price))
+%>% pipelines connect the codes
+
 - [Quarto features learned]
+Quarto is a publishing system combines code, text, output
 
 ## Questions & Challenges
 - [What I didn't fully understand]
