@@ -1,0 +1,6 @@
+"0","# Load the tidyverse library"
+"0","library(tidyverse)"
+"0",""
+"0","# Read in the car sales data"
+"0","# Make sure the data file is in your lab_0/data/ folder"
+"0","car_data <- read_csv(""data/car_sales_data.csv"")"
