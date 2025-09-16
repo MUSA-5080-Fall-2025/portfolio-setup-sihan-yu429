@@ -109,6 +109,25 @@ ul.task-list li input[type="checkbox"] {
     <a class="dropdown-item" href="../weekly-notes/week-01-notes.html">
  <span class="dropdown-text">Week 1 Notes</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../weekly-notes/week-02-notes.html">
+ <span class="dropdown-text">Week 2 Notes</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-labs" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">labs</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-labs">    
+        <li>
+    <a class="dropdown-item" href="../labs/">
+ <span class="dropdown-text">All labs</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../labs/lab0/scripts/lab0_template.html">
+ <span class="dropdown-text">lab 0</span></a>
+  </li>  
     </ul>
   </li>
 </ul>
@@ -130,6 +149,8 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#key-concepts-learned" id="toc-key-concepts-learned" class="nav-link active" data-scroll-target="#key-concepts-learned">Key Concepts Learned</a>
   <ul class="collapse">
   <li><a href="#algorithmic-decision-making" id="toc-algorithmic-decision-making" class="nav-link" data-scroll-target="#algorithmic-decision-making">Algorithmic Decision Making</a></li>
+  <li><a href="#algorithms-go-wrong" id="toc-algorithms-go-wrong" class="nav-link" data-scroll-target="#algorithms-go-wrong">Algorithms go wrong</a></li>
+  <li><a href="#census-data-foundation" id="toc-census-data-foundation" class="nav-link" data-scroll-target="#census-data-foundation">Census Data Foundation</a></li>
   </ul></li>
   <li><a href="#coding-techniques" id="toc-coding-techniques" class="nav-link" data-scroll-target="#coding-techniques">Coding Techniques</a></li>
   <li><a href="#questions-challenges" id="toc-questions-challenges" class="nav-link" data-scroll-target="#questions-challenges">Questions &amp; Challenges</a></li>
@@ -180,15 +201,29 @@ ul.task-list li input[type="checkbox"] {
 <li><p>AI → Algorithms that adjust and improve across iterations (neural networks, etc.)</p></li>
 </ul>
 </section>
+<section id="algorithms-go-wrong" class="level3">
+<h3 class="anchored" data-anchor-id="algorithms-go-wrong">Algorithms go wrong</h3>
+<p>data analytics is subjective- ivolves human choices, thus embed human values and biases</p>
+</section>
+<section id="census-data-foundation" class="level3">
+<h3 class="anchored" data-anchor-id="census-data-foundation">Census Data Foundation</h3>
+<p>census data: - every 10 years counting people in the country american community survey: - 3% of household surveyed annually - 1-year estimates(most current, smallest sample) and 5-year estimate(most reliable, largest sample) - all acs data with <em>margins of error</em> - summary tables &amp; PUMS-individual records</p>
+<p>hierarchy: county - state and regional planning - census tracts : 1500-8000 people - neighborhood analysis – blocks groups(600-3000 people) — blocks(~85 people)</p>
+<p>add “noise” to the data to prevent “re-identify” the individuals</p>
+</section>
 </section>
 <section id="coding-techniques" class="level2">
 <h2 class="anchored" data-anchor-id="coding-techniques">Coding Techniques</h2>
+<p>accessing census data in R: use the package “tidycensus” MOE (margin of error): - large MOE relative to estimate = less reliable - small = more reliable - always report MOE alongside estimates, consider using 5-year estimates fir greater reliability</p>
+<p>two formate of output: - long - wide: has one row for one id</p>
 </section>
 <section id="questions-challenges" class="level2">
 <h2 class="anchored" data-anchor-id="questions-challenges">Questions &amp; Challenges</h2>
 </section>
 <section id="connections-to-policy" class="level2">
 <h2 class="anchored" data-anchor-id="connections-to-policy">Connections to Policy</h2>
+<p>###Government use algorithms because: long history of goverment data collection + new: more data (also “accidental”), and focus on prediction make it harder to interpret</p>
+<p>advantages: efficiency, consistency, objectivity, cost savings</p>
 </section>
 <section id="reflection" class="level2">
 <h2 class="anchored" data-anchor-id="reflection">Reflection</h2>

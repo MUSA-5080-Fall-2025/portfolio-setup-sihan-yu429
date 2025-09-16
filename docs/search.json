@@ -242,21 +242,21 @@
     "href": "weekly-notes/week-02-notes.html",
     "title": "Week 2 Notes - Algorithmic DecisionMaking & Census Data",
     "section": "",
-    "text": "Algorithm - a set of rules of instruction fir solving a probem or completing a task.\nin government - system used to assist/replace human decision-maker based on prediction from models that process historical data: - input(“features”, “predictors”, “independent variables”, “x”) - output (“labels”, “outcome”, “dependent variable”, “y”)\nreal world - groups of people & individual (systemetical descrimination)\nkey terms: - Data Science → Computer science/engineering focus on algorithms and methods\n\nData Analytics → Application of data science methods to other disciplines\nMachine Learning → a set of algorithms doing two things: classification & prediction\nAI → Algorithms that adjust and improve across iterations (neural networks, etc.)"
+    "text": "Algorithm - a set of rules of instruction fir solving a probem or completing a task.\nin government - system used to assist/replace human decision-maker based on prediction from models that process historical data: - input(“features”, “predictors”, “independent variables”, “x”) - output (“labels”, “outcome”, “dependent variable”, “y”)\nreal world - groups of people & individual (systemetical descrimination)\nkey terms: - Data Science → Computer science/engineering focus on algorithms and methods\n\nData Analytics → Application of data science methods to other disciplines\nMachine Learning → a set of algorithms doing two things: classification & prediction\nAI → Algorithms that adjust and improve across iterations (neural networks, etc.)\n\n\n\n\ndata analytics is subjective- ivolves human choices, thus embed human values and biases\n\n\n\ncensus data: - every 10 years counting people in the country american community survey: - 3% of household surveyed annually - 1-year estimates(most current, smallest sample) and 5-year estimate(most reliable, largest sample) - all acs data with margins of error - summary tables & PUMS-individual records\nhierarchy: county - state and regional planning - census tracts : 1500-8000 people - neighborhood analysis – blocks groups(600-3000 people) — blocks(~85 people)\nadd “noise” to the data to prevent “re-identify” the individuals"
   },
   {
     "objectID": "weekly-notes/week-02-notes.html#key-concepts-learned",
     "href": "weekly-notes/week-02-notes.html#key-concepts-learned",
     "title": "Week 2 Notes - Algorithmic DecisionMaking & Census Data",
     "section": "",
-    "text": "Algorithm - a set of rules of instruction fir solving a probem or completing a task.\nin government - system used to assist/replace human decision-maker based on prediction from models that process historical data: - input(“features”, “predictors”, “independent variables”, “x”) - output (“labels”, “outcome”, “dependent variable”, “y”)\nreal world - groups of people & individual (systemetical descrimination)\nkey terms: - Data Science → Computer science/engineering focus on algorithms and methods\n\nData Analytics → Application of data science methods to other disciplines\nMachine Learning → a set of algorithms doing two things: classification & prediction\nAI → Algorithms that adjust and improve across iterations (neural networks, etc.)"
+    "text": "Algorithm - a set of rules of instruction fir solving a probem or completing a task.\nin government - system used to assist/replace human decision-maker based on prediction from models that process historical data: - input(“features”, “predictors”, “independent variables”, “x”) - output (“labels”, “outcome”, “dependent variable”, “y”)\nreal world - groups of people & individual (systemetical descrimination)\nkey terms: - Data Science → Computer science/engineering focus on algorithms and methods\n\nData Analytics → Application of data science methods to other disciplines\nMachine Learning → a set of algorithms doing two things: classification & prediction\nAI → Algorithms that adjust and improve across iterations (neural networks, etc.)\n\n\n\n\ndata analytics is subjective- ivolves human choices, thus embed human values and biases\n\n\n\ncensus data: - every 10 years counting people in the country american community survey: - 3% of household surveyed annually - 1-year estimates(most current, smallest sample) and 5-year estimate(most reliable, largest sample) - all acs data with margins of error - summary tables & PUMS-individual records\nhierarchy: county - state and regional planning - census tracts : 1500-8000 people - neighborhood analysis – blocks groups(600-3000 people) — blocks(~85 people)\nadd “noise” to the data to prevent “re-identify” the individuals"
   },
   {
     "objectID": "weekly-notes/week-02-notes.html#coding-techniques",
     "href": "weekly-notes/week-02-notes.html#coding-techniques",
     "title": "Week 2 Notes - Algorithmic DecisionMaking & Census Data",
     "section": "Coding Techniques",
-    "text": "Coding Techniques"
+    "text": "Coding Techniques\naccessing census data in R: use the package “tidycensus” MOE (margin of error): - large MOE relative to estimate = less reliable - small = more reliable - always report MOE alongside estimates, consider using 5-year estimates fir greater reliability\ntwo formate of output: - long - wide: has one row for one id"
   },
   {
     "objectID": "weekly-notes/week-02-notes.html#questions-challenges",
@@ -270,7 +270,7 @@
     "href": "weekly-notes/week-02-notes.html#connections-to-policy",
     "title": "Week 2 Notes - Algorithmic DecisionMaking & Census Data",
     "section": "Connections to Policy",
-    "text": "Connections to Policy"
+    "text": "Connections to Policy\n###Government use algorithms because: long history of goverment data collection + new: more data (also “accidental”), and focus on prediction make it harder to interpret\nadvantages: efficiency, consistency, objectivity, cost savings"
   },
   {
     "objectID": "weekly-notes/week-02-notes.html#reflection",
