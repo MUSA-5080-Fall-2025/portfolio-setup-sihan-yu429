@@ -22,6 +22,9 @@ website:
             text: "All labs"
           - href: labs/lab0/scripts/lab0_template.qmd
             text: "lab 0"
+          - href: labs/lab1/scripts/assignment1_template.qmd
+            text: "lab 1"
+ 
             
           
 format:
