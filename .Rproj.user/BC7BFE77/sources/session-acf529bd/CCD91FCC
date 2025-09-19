@@ -3,24 +3,24 @@
     "path": "D:/MUSA5080_Github/portfolio-setup-sihan-yu429/_quarto.yml",
     "project_path": "_quarto.yml",
     "type": "yaml",
-    "hash": "0",
+    "hash": "134613835",
     "contents": "",
-    "dirty": true,
+    "dirty": false,
     "created": 1757351653019.0,
     "source_on_save": false,
     "relative_order": 2,
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "39,0",
-        "scrollLine": "8"
+        "cursorPosition": "24,27",
+        "scrollLine": "13"
     },
     "folds": "",
-    "lastKnownWriteTime": 1758225366,
+    "lastKnownWriteTime": 1758306876,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1758228625430,
+    "last_content_update": 1758306876925,
     "read_only": false,
     "read_only_alternatives": []
 }

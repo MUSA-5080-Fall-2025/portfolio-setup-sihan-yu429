@@ -22,12 +22,13 @@ website:
             text: "All labs"
           - href: labs/lab0/scripts/lab0_template.qmd
             text: "lab 0"
-         
-      - text: "Assignments”
+        - text: "assgnments"
         menu:
+          - href: assignments/
+            text: "All assignments"
           - href: assignments/assignment1/scripts/assignment1_template.qmd
             text: "Assignment 1: Census Data Exploration"
-            
+    
           
 format:
   html:
