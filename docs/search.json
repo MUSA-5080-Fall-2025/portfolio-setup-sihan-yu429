@@ -1,0 +1,79 @@
+[
+  {
+    "objectID": "weekly-notes/week-01-notes.html",
+    "href": "weekly-notes/week-01-notes.html",
+    "title": "Week 1 Notes - Course Introduction",
+    "section": "",
+    "text": "Set up portfolio\nR,quarto,github"
+  },
+  {
+    "objectID": "weekly-notes/week-01-notes.html#key-concepts-learned",
+    "href": "weekly-notes/week-01-notes.html#key-concepts-learned",
+    "title": "Week 1 Notes - Course Introduction",
+    "section": "",
+    "text": "Set up portfolio\nR,quarto,github"
+  },
+  {
+    "objectID": "weekly-notes/week-01-notes.html#coding-techniques",
+    "href": "weekly-notes/week-01-notes.html#coding-techniques",
+    "title": "Week 1 Notes - Course Introduction",
+    "section": "Coding Techniques",
+    "text": "Coding Techniques\n\nBasic setting up skill\nHow to render and push"
+  },
+  {
+    "objectID": "weekly-notes/week-01-notes.html#questions-challenges",
+    "href": "weekly-notes/week-01-notes.html#questions-challenges",
+    "title": "Week 1 Notes - Course Introduction",
+    "section": "Questions & Challenges",
+    "text": "Questions & Challenges\n\nWhich file I should go to when I make changes\nThe whole process of making changes"
+  },
+  {
+    "objectID": "weekly-notes/week-01-notes.html#connections-to-policy",
+    "href": "weekly-notes/week-01-notes.html#connections-to-policy",
+    "title": "Week 1 Notes - Course Introduction",
+    "section": "Connections to Policy",
+    "text": "Connections to Policy\n\nUpload my work to my portfolio for visualization"
+  },
+  {
+    "objectID": "weekly-notes/week-01-notes.html#reflection",
+    "href": "weekly-notes/week-01-notes.html#reflection",
+    "title": "Week 1 Notes - Course Introduction",
+    "section": "Reflection",
+    "text": "Reflection\n\nHow different platform can connect and work with each other\nI want to practice more and dig deeper"
+  },
+  {
+    "objectID": "weekly-notes/week-02-notes.html",
+    "href": "weekly-notes/week-02-notes.html",
+    "title": "Week 2 Notes - Algorithm Desicison Making",
+    "section": "",
+    "text": "Definition: A set of rules of instructions for solving a problem or completing a task. Application: Criminal Justice/Housing&Finance/Healthcare.\n\n\n\nEvery steps involves human choice embed human values and bias proxy don’t understand background and history\n\n\n\nScenario: School enrollment assignment\nProxy: ZIP codes → stand-in for “assignment” Blind spot:ZIP codes are not a direct measure of individual circumstances. They can mask or undercount diversity, education levels within households, and financial status differences across families in the same area. Harm + Guardrail: Using ZIP code alone may reinforce existing segregation patterns, limit opportunities for disadvantaged students, and perpetuate inequities in school access.\n\n\n\n\nUnderstanding community demographics\nAllocate government resources\nTracking neighborhood changes\nDesigning fair algorithm\n\nMost policy analysis happens at - county level - census track level - block group level\nChallenges & Concerns - Most computing can “re-identify” individuals from census data/privacy - solution: add noise to data set - privacy vs accuracy"
+  },
+  {
+    "objectID": "weekly-notes/week-02-notes.html#key-concepts-learned",
+    "href": "weekly-notes/week-02-notes.html#key-concepts-learned",
+    "title": "Week 2 Notes - Algorithm Desicison Making",
+    "section": "",
+    "text": "Definition: A set of rules of instructions for solving a problem or completing a task. Application: Criminal Justice/Housing&Finance/Healthcare.\n\n\n\nEvery steps involves human choice embed human values and bias proxy don’t understand background and history\n\n\n\nScenario: School enrollment assignment\nProxy: ZIP codes → stand-in for “assignment” Blind spot:ZIP codes are not a direct measure of individual circumstances. They can mask or undercount diversity, education levels within households, and financial status differences across families in the same area. Harm + Guardrail: Using ZIP code alone may reinforce existing segregation patterns, limit opportunities for disadvantaged students, and perpetuate inequities in school access.\n\n\n\n\nUnderstanding community demographics\nAllocate government resources\nTracking neighborhood changes\nDesigning fair algorithm\n\nMost policy analysis happens at - county level - census track level - block group level\nChallenges & Concerns - Most computing can “re-identify” individuals from census data/privacy - solution: add noise to data set - privacy vs accuracy"
+  },
+  {
+    "objectID": "weekly-notes/week-02-notes.html#connections-to-policy",
+    "href": "weekly-notes/week-02-notes.html#connections-to-policy",
+    "title": "Week 2 Notes - Algorithm Desicison Making",
+    "section": "Connections to Policy",
+    "text": "Connections to Policy\nGovernment using algorithm (Having limited budget and need to serve everyone) - Efficiency: process more cases faster - Consistency: same rules applied to everyone - Objectivity: removes human bias - Cost savings: fewer staff needed"
+  },
+  {
+    "objectID": "weekly-notes/week-02-notes.html#coding-techniques",
+    "href": "weekly-notes/week-02-notes.html#coding-techniques",
+    "title": "Week 2 Notes - Algorithm Desicison Making",
+    "section": "Coding Techniques",
+    "text": "Coding Techniques\n\nInstall packages\nClean data"
+  },
+  {
+    "objectID": "weekly-notes/week-02-notes.html#reflection",
+    "href": "weekly-notes/week-02-notes.html#reflection",
+    "title": "Week 2 Notes - Algorithm Desicison Making",
+    "section": "Reflection",
+    "text": "Reflection"
+  }
+]
