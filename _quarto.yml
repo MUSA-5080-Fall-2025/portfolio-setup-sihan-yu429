@@ -8,28 +8,25 @@ website:
     left:
       - href: index.qmd
         text: Home
-      - text: "Weekly Notes" 
+
+      - text: Weekly Notes
         menu:
-          - href: weekly-notes/
-            text: "All Notes"
           - href: weekly-notes/week-01-notes.qmd
-            text: "Week 1 Notes"
+            text: week 1
           - href: weekly-notes/week-02-notes.qmd
-            text: "Week 2 Notes"
-      - text: "Labs"
+            text: week 2
+
+      - text: Labs
         menu:
-          - href: labs/
-            text: "All labs"
           - href: labs/lab0/scripts/lab0_template.qmd
-            text: "lab 0"
-      - text: "assgnments"
+            text: "Lab 0: dplyr Basics"
+      - text: Assignments
         menu:
-          - href: assignments/
-            text: "All Assignments"
-          - href: assignments/assignment1/scripts/assignment1_template.qmd
-            text: "Assignment 1: Census Data Exploration"
-    
-          
+          - href: assignments/assignments1/scripts/assignment1_template.qmd
+            text: Sample Census Analysis
+
+ 
+   
 format:
   html:
     theme: cosmo
