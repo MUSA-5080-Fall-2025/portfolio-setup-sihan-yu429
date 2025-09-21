@@ -139,9 +139,9 @@ library(dplyr)
 
 car_data <- car_data %>%
   mutate(price_category = case_when(
-    price < 15000 ~ "budget",
-    price >= 15000 & price <= 30000 ~ "midrange",
-    price > 30000 ~ "mid-range"
+    Price < 15000 ~ "budget",
+    Price >= 15000 & Price <= 30000 ~ "midrange",
+    Price > 30000 ~ "mid-range"
   ))
 
 
