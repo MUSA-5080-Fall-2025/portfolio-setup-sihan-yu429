@@ -296,7 +296,10 @@ county_summary <- tract_data %>%
 
 
 # Create a nicely formatted table of your results using kable()
-
+kable(
+  top_hispanic,
+  caption = "Tract with Highest Hispanic/Latino Percentage (Selected Counties)"
+)
 kable(county_summary, caption = "Average Demographic Percentages by County")
 
 ```
