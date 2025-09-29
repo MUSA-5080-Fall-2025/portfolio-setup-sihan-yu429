@@ -1,5 +1,100 @@
----
-title: "week-04-notes"
-format: html
+, -
+title: "Week 4 Notes - Spatial Data & GIS Operations in R"
+date: "2025-09-08"
 ---
 
+## Key Concepts Learned
+### Spatial Data Fundamentals
+*vector data model - geometry*
+- infinite complicated world -> simplified geometric representations
+descreted object -> vector;
+continuous object -> raster
+- basic types: points, lines, polygons
+- each feature has: geometry(Shape and location) & attributes( Data about that feature)
+
+*spatial data format*
+- shapefile(ESRI): .shp(95.00, 0.00), .shx(1), .dbf(name/penn)
+- geojson
+- kml/kmz
+- Database connections (PostGIS)
+Spatial data is just data.frame + geometry column
+
+*sf package in R*
+- Modern replacement for older spatial packages
+- Integrates with tidyverse workflows
+- Follows international standards
+- Fast and reliable
+- simple features(sf)
+
+### Coordinate reference systems (CRS)
+maps are flat but the Earth is round
+problem:
+- Can’t preserve area, distance, and angles simultaneously
+- Different projections optimize different properties
+- Wrong projection → wrong analysis results!
+
+The Earth: 
+  bumpy geoid -> 
+  step 1. approximate Earth's shape with ellipsoid
+  step 2. tie ellipsoid to the real Earth  (Datum)
+          - 1866 Clarke Meades Ranch, Kansas - North                         American Datum 1927 (NAD 27) -> NAD 83
+          - GRS 80 - earth centered
+          - WGS 84
+  step 3. put down lat/lon grid
+-> *Geographic (geodetic) Coordinate Systems* with Lat/Lon (so far)
+  step4. project 3D coordinate to flat screen
+         - Cylindrical- no distortion at the line of tangency(where touch the Earth), as geting further from the line it get ditorted bigger. e.g. Mercator
+         - transverse cylindrical/ transverse cylindrical - for elongated country like Chile, along one longitude(?)
+         * SADD: Shape, Area, Distortion, Direction
+         - conic: cone shaped touch earth, for country: USA, China...
+         - planar: from one point
+         
+-> *Projected Coordinate System*
+localized coordinate system based on non-distorted grid
+1. UTM: 60 different zones, each zone is 6 degrees of longitude wide, how far away from the original corner of the left down
+   False northing; False easting; no negative
+   e.g. 185,000N, 200,000E - in meters
+   
+2. State Plane (use in USA, PA): each state has their projection, based on their shape (conic)
+   also from the SW corner, in feet; still based on datum
+   e.g. PROJCRS, in PA, cut state in half for projection-> we use the one contains Philadelphia; 
+   
+
+## Coding Techniques
+### Spatial Operations
+- st_intersects()	Any overlap at all	“Counties affected by flooding” - xlip data to a study area
+- st_touches()	Share boundary, no interior overlap	“Neighboring counties”
+- st_within()	Completely inside	“Schools within district boundaries”
+- st_contains()	Completely contains	“Districts containing hospitals”
+- st_overlaps()	Partial overlap	“Overlapping service areas”
+- st_disjoint()	No spatial relationship	“Counties separate from urban areas”
+- st_centroid() the center of one polygon
+- st_buffer(allegheny_center, dist = 50000) within the distance of a certain point
+- st_filter equal to a spatial selection
+  eg. st_filter(allegheny, .predicate = st_within)
+- union: like dissolve, merge few object into one record  
+- placeholder: dot(.) , represents the data being passed through the pipe (%>%) 
+
+- *intersection* and *union* creates new shapes
+
+### Checking and Setting CRS
+- To simply check current CRS: st_crs(pa_counties)
+
+- To set CRS (ONLY if missing): pa_counties <- st_set_crs(pa_counties, 4326)
+  *write or rewrite metadata
+
+- Transform to different CRS
+  Pennsylvania South State Plane (good for PA analysis):
+  pa_counties_projected <- pa_counties %>%   st_transform(crs = 3365)
+
+- Transform to Albers Equal Area (good for area calculations) pa_counties_albers <- pa_counties %>%   st_transform(crs = 5070) `
+## Questions & Challenges
+- Which file I should go to when I make changes
+- The whole process of making changes
+
+## Connections to Policy
+- Upload my work to my portfolio for visualization
+
+## Reflection
+- How different platform can connect and work with each other
+- I want to practice more and dig deeper
