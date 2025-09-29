@@ -56,7 +56,7 @@ library(tidycensus)
 library(tidyverse)
 library(knitr)
 # Set your Census API key
-census_api_key("e173851c633e89c20243632174db68f63bac8856", install = TRUE)
+census_api_key("e173851c633e89c20243632174db68f63bac8856")
 # Choose your state for analysis - assign it to a variable called my_state
 my_state <- "New York"
 ```
