@@ -2,35 +2,35 @@
   {
     "objectID": "weekly-notes/week-04-notes.html",
     "href": "weekly-notes/week-04-notes.html",
-    "title": "Sihan Yu- MUSA 5080 Portfolio",
+    "title": "Week 4 Notes - Spatial Data & GIS Operations in R",
     "section": "",
-    "text": ", - title: “Week 4 Notes - Spatial Data & GIS Operations in R” date: “2025-09-08” —"
+    "text": "vector data model - geometry - infinite complicated world -&gt; simplified geometric representations descreted object -&gt; vector; continuous object -&gt; raster - basic types: points, lines, polygons - each feature has: geometry(Shape and location) & attributes( Data about that feature)\nspatial data format - shapefile(ESRI): .shp(95.00, 0.00), .shx(1), .dbf(name/penn) - geojson - kml/kmz - Database connections (PostGIS) Spatial data is just data.frame + geometry column\nsf package in R - Modern replacement for older spatial packages - Integrates with tidyverse workflows - Follows international standards - Fast and reliable - simple features(sf)\n\n\n\nmaps are flat but the Earth is round problem: - Can’t preserve area, distance, and angles simultaneously - Different projections optimize different properties - Wrong projection → wrong analysis results!\nThe Earth: bumpy geoid -&gt; step 1. approximate Earth’s shape with ellipsoid step 2. tie ellipsoid to the real Earth (Datum) - 1866 Clarke Meades Ranch, Kansas - North American Datum 1927 (NAD 27) -&gt; NAD 83 - GRS 80 - earth centered - WGS 84 step 3. put down lat/lon grid -&gt; Geographic (geodetic) Coordinate Systems with Lat/Lon (so far) step4. project 3D coordinate to flat screen - Cylindrical- no distortion at the line of tangency(where touch the Earth), as geting further from the line it get ditorted bigger. e.g. Mercator - transverse cylindrical/ transverse cylindrical - for elongated country like Chile, along one longitude(?) * SADD: Shape, Area, Distortion, Direction - conic: cone shaped touch earth, for country: USA, China… - planar: from one point\n-&gt; Projected Coordinate System localized coordinate system based on non-distorted grid 1. UTM: 60 different zones, each zone is 6 degrees of longitude wide, how far away from the original corner of the left down False northing; False easting; no negative e.g. 185,000N, 200,000E - in meters\n\nState Plane (use in USA, PA): each state has their projection, based on their shape (conic) also from the SW corner, in feet; still based on datum e.g. PROJCRS, in PA, cut state in half for projection-&gt; we use the one contains Philadelphia;"
   },
   {
     "objectID": "weekly-notes/week-04-notes.html#key-concepts-learned",
     "href": "weekly-notes/week-04-notes.html#key-concepts-learned",
-    "title": "Sihan Yu- MUSA 5080 Portfolio",
-    "section": "Key Concepts Learned",
-    "text": "Key Concepts Learned\n\nSpatial Data Fundamentals\nvector data model - geometry - infinite complicated world -&gt; simplified geometric representations descreted object -&gt; vector; continuous object -&gt; raster - basic types: points, lines, polygons - each feature has: geometry(Shape and location) & attributes( Data about that feature)\nspatial data format - shapefile(ESRI): .shp(95.00, 0.00), .shx(1), .dbf(name/penn) - geojson - kml/kmz - Database connections (PostGIS) Spatial data is just data.frame + geometry column\nsf package in R - Modern replacement for older spatial packages - Integrates with tidyverse workflows - Follows international standards - Fast and reliable - simple features(sf)\n\n\nCoordinate reference systems (CRS)\nmaps are flat but the Earth is round problem: - Can’t preserve area, distance, and angles simultaneously - Different projections optimize different properties - Wrong projection → wrong analysis results!\nThe Earth: bumpy geoid -&gt; step 1. approximate Earth’s shape with ellipsoid step 2. tie ellipsoid to the real Earth (Datum) - 1866 Clarke Meades Ranch, Kansas - North American Datum 1927 (NAD 27) -&gt; NAD 83 - GRS 80 - earth centered - WGS 84 step 3. put down lat/lon grid -&gt; Geographic (geodetic) Coordinate Systems with Lat/Lon (so far) step4. project 3D coordinate to flat screen - Cylindrical- no distortion at the line of tangency(where touch the Earth), as geting further from the line it get ditorted bigger. e.g. Mercator - transverse cylindrical/ transverse cylindrical - for elongated country like Chile, along one longitude(?) * SADD: Shape, Area, Distortion, Direction - conic: cone shaped touch earth, for country: USA, China… - planar: from one point\n-&gt; Projected Coordinate System localized coordinate system based on non-distorted grid 1. UTM: 60 different zones, each zone is 6 degrees of longitude wide, how far away from the original corner of the left down False northing; False easting; no negative e.g. 185,000N, 200,000E - in meters\n\nState Plane (use in USA, PA): each state has their projection, based on their shape (conic) also from the SW corner, in feet; still based on datum e.g. PROJCRS, in PA, cut state in half for projection-&gt; we use the one contains Philadelphia;"
+    "title": "Week 4 Notes - Spatial Data & GIS Operations in R",
+    "section": "",
+    "text": "vector data model - geometry - infinite complicated world -&gt; simplified geometric representations descreted object -&gt; vector; continuous object -&gt; raster - basic types: points, lines, polygons - each feature has: geometry(Shape and location) & attributes( Data about that feature)\nspatial data format - shapefile(ESRI): .shp(95.00, 0.00), .shx(1), .dbf(name/penn) - geojson - kml/kmz - Database connections (PostGIS) Spatial data is just data.frame + geometry column\nsf package in R - Modern replacement for older spatial packages - Integrates with tidyverse workflows - Follows international standards - Fast and reliable - simple features(sf)\n\n\n\nmaps are flat but the Earth is round problem: - Can’t preserve area, distance, and angles simultaneously - Different projections optimize different properties - Wrong projection → wrong analysis results!\nThe Earth: bumpy geoid -&gt; step 1. approximate Earth’s shape with ellipsoid step 2. tie ellipsoid to the real Earth (Datum) - 1866 Clarke Meades Ranch, Kansas - North American Datum 1927 (NAD 27) -&gt; NAD 83 - GRS 80 - earth centered - WGS 84 step 3. put down lat/lon grid -&gt; Geographic (geodetic) Coordinate Systems with Lat/Lon (so far) step4. project 3D coordinate to flat screen - Cylindrical- no distortion at the line of tangency(where touch the Earth), as geting further from the line it get ditorted bigger. e.g. Mercator - transverse cylindrical/ transverse cylindrical - for elongated country like Chile, along one longitude(?) * SADD: Shape, Area, Distortion, Direction - conic: cone shaped touch earth, for country: USA, China… - planar: from one point\n-&gt; Projected Coordinate System localized coordinate system based on non-distorted grid 1. UTM: 60 different zones, each zone is 6 degrees of longitude wide, how far away from the original corner of the left down False northing; False easting; no negative e.g. 185,000N, 200,000E - in meters\n\nState Plane (use in USA, PA): each state has their projection, based on their shape (conic) also from the SW corner, in feet; still based on datum e.g. PROJCRS, in PA, cut state in half for projection-&gt; we use the one contains Philadelphia;"
   },
   {
     "objectID": "weekly-notes/week-04-notes.html#coding-techniques",
     "href": "weekly-notes/week-04-notes.html#coding-techniques",
-    "title": "Sihan Yu- MUSA 5080 Portfolio",
+    "title": "Week 4 Notes - Spatial Data & GIS Operations in R",
     "section": "Coding Techniques",
     "text": "Coding Techniques\n\nSpatial Operations\n\nst_intersects() Any overlap at all “Counties affected by flooding” - xlip data to a study area\nst_touches() Share boundary, no interior overlap “Neighboring counties”\nst_within() Completely inside “Schools within district boundaries”\nst_contains() Completely contains “Districts containing hospitals”\nst_overlaps() Partial overlap “Overlapping service areas”\nst_disjoint() No spatial relationship “Counties separate from urban areas”\nst_centroid() the center of one polygon\nst_buffer(allegheny_center, dist = 50000) within the distance of a certain point\nst_filter equal to a spatial selection eg. st_filter(allegheny, .predicate = st_within)\nunion: like dissolve, merge few object into one record\n\nplaceholder: dot(.) , represents the data being passed through the pipe (%&gt;%)\nintersection and union creates new shapes\n\n\n\nChecking and Setting CRS\n\nTo simply check current CRS: st_crs(pa_counties)\nTo set CRS (ONLY if missing): pa_counties &lt;- st_set_crs(pa_counties, 4326) *write or rewrite metadata\nTransform to different CRS Pennsylvania South State Plane (good for PA analysis): pa_counties_projected &lt;- pa_counties %&gt;% st_transform(crs = 3365)\nTransform to Albers Equal Area (good for area calculations) pa_counties_albers &lt;- pa_counties %&gt;% st_transform(crs = 5070) ` ## Questions & Challenges\nWhich file I should go to when I make changes\nThe whole process of making changes"
   },
   {
     "objectID": "weekly-notes/week-04-notes.html#connections-to-policy",
     "href": "weekly-notes/week-04-notes.html#connections-to-policy",
-    "title": "Sihan Yu- MUSA 5080 Portfolio",
+    "title": "Week 4 Notes - Spatial Data & GIS Operations in R",
     "section": "Connections to Policy",
     "text": "Connections to Policy\n\nUpload my work to my portfolio for visualization"
   },
   {
     "objectID": "weekly-notes/week-04-notes.html#reflection",
     "href": "weekly-notes/week-04-notes.html#reflection",
-    "title": "Sihan Yu- MUSA 5080 Portfolio",
+    "title": "Week 4 Notes - Spatial Data & GIS Operations in R",
     "section": "Reflection",
     "text": "Reflection\n\nHow different platform can connect and work with each other\nI want to practice more and dig deeper"
   },
@@ -422,42 +422,42 @@
   {
     "objectID": "weekly-notes/week-03-notes.html",
     "href": "weekly-notes/week-03-notes.html",
-    "title": "Week 1 Notes - Course Introduction",
+    "title": "Week 3 Notes - Course Introduction",
     "section": "",
     "text": "###Importance of Visualization### Anscombe’s Quartet: The dataset with identical summary statistics, but completely different patterns when visualized. ###policy implications### Summary statistics can hide critical patterns Outliers may represent important communities Relationships aren’t always linear Visual inspection reveals data quality issues ###ethical data communication### Create honest, transparent visualizations Always assess and communicate data quality Consider who might be harmed by uncertain data\nBig MOE: small sample size/ a large variation in the sample"
   },
   {
     "objectID": "weekly-notes/week-03-notes.html#key-concepts-learned",
     "href": "weekly-notes/week-03-notes.html#key-concepts-learned",
-    "title": "Week 1 Notes - Course Introduction",
+    "title": "Week 3 Notes - Course Introduction",
     "section": "",
     "text": "###Importance of Visualization### Anscombe’s Quartet: The dataset with identical summary statistics, but completely different patterns when visualized. ###policy implications### Summary statistics can hide critical patterns Outliers may represent important communities Relationships aren’t always linear Visual inspection reveals data quality issues ###ethical data communication### Create honest, transparent visualizations Always assess and communicate data quality Consider who might be harmed by uncertain data\nBig MOE: small sample size/ a large variation in the sample"
   },
   {
     "objectID": "weekly-notes/week-03-notes.html#coding-techniques",
     "href": "weekly-notes/week-03-notes.html#coding-techniques",
-    "title": "Week 1 Notes - Course Introduction",
+    "title": "Week 3 Notes - Course Introduction",
     "section": "Coding Techniques",
     "text": "Coding Techniques\n###ggplots philosophy### grammar of graphic principles: Data-&gt; Aesthetics -&gt;Geometries-&gt;Visual\n{g&lt;- ggplot(data = your_data) + aes(x = variable1, y = variables2, variable3) + geom_something(decorate, colors, size…..) + additional_layers()}\nData: Your dataset (census data, survey responses, etc.) Aesthetics: What variables map to visual properties (x, y, color, size) - specific elements - x, y - position - color - point/line color - fill - area fill color - size - point/line size - shape - point shape - alpha - transparency\nGeometries: How to display the data (points, bars, lines) Additional layers: Scales, themes, facets, annotations\n###Exploratory Data Analysis(EDA) Mindset 1. Load and inspect - dimensions, variable types, missing data 2. Assess reliability - examine margins of error, calculate coefficients of variation 3. Visualize distributions - histograms, boxplots for each variable 4. Explore relationships - scatter plots, correlations 5. Identify patterns - grouping, clustering, geographical patterns 6. Question anomalies - investigate outliers and unusual patterns 7. Document limitations - prepare honest communication about data quality\n###join left join: preserve everything from the first table input, if right doesnt’t provide-shows NA in the joined one right join: similar as the first one full join: with all the rows from both table inner join: only contain the row that in both table\n*the column name doesn’t have to be the same, but the data type need to be the same"
   },
   {
     "objectID": "weekly-notes/week-03-notes.html#questions-challenges",
     "href": "weekly-notes/week-03-notes.html#questions-challenges",
-    "title": "Week 1 Notes - Course Introduction",
+    "title": "Week 3 Notes - Course Introduction",
     "section": "Questions & Challenges",
     "text": "Questions & Challenges\n\nWhich file I should go to when I make changes\nThe whole process of making changes"
   },
   {
     "objectID": "weekly-notes/week-03-notes.html#connections-to-policy",
     "href": "weekly-notes/week-03-notes.html#connections-to-policy",
-    "title": "Week 1 Notes - Course Introduction",
+    "title": "Week 3 Notes - Course Introduction",
     "section": "Connections to Policy",
     "text": "Connections to Policy\n\nUpload my work to my portfolio for visualization"
   },
   {
     "objectID": "weekly-notes/week-03-notes.html#reflection",
     "href": "weekly-notes/week-03-notes.html#reflection",
-    "title": "Week 1 Notes - Course Introduction",
+    "title": "Week 3 Notes - Course Introduction",
     "section": "Reflection",
     "text": "Reflection\n\nHow different platform can connect and work with each other\nI want to practice more and dig deeper"
   }

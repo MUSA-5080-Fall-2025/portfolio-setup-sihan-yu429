@@ -1,6 +1,6 @@
 ---
-title: "Week 1 Notes - Course Introduction"
-date: "2025-09-08"
+title: "Week 3 Notes - Course Introduction"
+date: "2025-09-22"
 ---
 
 ## Key Concepts Learned
