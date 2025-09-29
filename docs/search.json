@@ -383,5 +383,47 @@
     "title": "Week 1 Notes - Course Introduction",
     "section": "Reflection",
     "text": "Reflection\n\nHow different platform can connect and work with each other\nI want to practice more and dig deeper"
+  },
+  {
+    "objectID": "weekly-notes/week-03-notes.html",
+    "href": "weekly-notes/week-03-notes.html",
+    "title": "Week 1 Notes - Course Introduction",
+    "section": "",
+    "text": "###Importance of Visualization### Anscombe’s Quartet: The dataset with identical summary statistics, but completely different patterns when visualized. ###policy implications### Summary statistics can hide critical patterns Outliers may represent important communities Relationships aren’t always linear Visual inspection reveals data quality issues ###ethical data communication### Create honest, transparent visualizations Always assess and communicate data quality Consider who might be harmed by uncertain data\nBig MOE: small sample size/ a large variation in the sample"
+  },
+  {
+    "objectID": "weekly-notes/week-03-notes.html#key-concepts-learned",
+    "href": "weekly-notes/week-03-notes.html#key-concepts-learned",
+    "title": "Week 1 Notes - Course Introduction",
+    "section": "",
+    "text": "###Importance of Visualization### Anscombe’s Quartet: The dataset with identical summary statistics, but completely different patterns when visualized. ###policy implications### Summary statistics can hide critical patterns Outliers may represent important communities Relationships aren’t always linear Visual inspection reveals data quality issues ###ethical data communication### Create honest, transparent visualizations Always assess and communicate data quality Consider who might be harmed by uncertain data\nBig MOE: small sample size/ a large variation in the sample"
+  },
+  {
+    "objectID": "weekly-notes/week-03-notes.html#coding-techniques",
+    "href": "weekly-notes/week-03-notes.html#coding-techniques",
+    "title": "Week 1 Notes - Course Introduction",
+    "section": "Coding Techniques",
+    "text": "Coding Techniques\n###ggplots philosophy### grammar of graphic principles: Data-&gt; Aesthetics -&gt;Geometries-&gt;Visual\n{g&lt;- ggplot(data = your_data) + aes(x = variable1, y = variables2, variable3) + geom_something(decorate, colors, size…..) + additional_layers()}\nData: Your dataset (census data, survey responses, etc.) Aesthetics: What variables map to visual properties (x, y, color, size) - specific elements - x, y - position - color - point/line color - fill - area fill color - size - point/line size - shape - point shape - alpha - transparency\nGeometries: How to display the data (points, bars, lines) Additional layers: Scales, themes, facets, annotations\n###Exploratory Data Analysis(EDA) Mindset 1. Load and inspect - dimensions, variable types, missing data 2. Assess reliability - examine margins of error, calculate coefficients of variation 3. Visualize distributions - histograms, boxplots for each variable 4. Explore relationships - scatter plots, correlations 5. Identify patterns - grouping, clustering, geographical patterns 6. Question anomalies - investigate outliers and unusual patterns 7. Document limitations - prepare honest communication about data quality\n###join left join: preserve everything from the first table input, if right doesnt’t provide-shows NA in the joined one right join: similar as the first one full join: with all the rows from both table inner join: only contain the row that in both table\n*the column name doesn’t have to be the same, but the data type need to be the same"
+  },
+  {
+    "objectID": "weekly-notes/week-03-notes.html#questions-challenges",
+    "href": "weekly-notes/week-03-notes.html#questions-challenges",
+    "title": "Week 1 Notes - Course Introduction",
+    "section": "Questions & Challenges",
+    "text": "Questions & Challenges\n\nWhich file I should go to when I make changes\nThe whole process of making changes"
+  },
+  {
+    "objectID": "weekly-notes/week-03-notes.html#connections-to-policy",
+    "href": "weekly-notes/week-03-notes.html#connections-to-policy",
+    "title": "Week 1 Notes - Course Introduction",
+    "section": "Connections to Policy",
+    "text": "Connections to Policy\n\nUpload my work to my portfolio for visualization"
+  },
+  {
+    "objectID": "weekly-notes/week-03-notes.html#reflection",
+    "href": "weekly-notes/week-03-notes.html#reflection",
+    "title": "Week 1 Notes - Course Introduction",
+    "section": "Reflection",
+    "text": "Reflection\n\nHow different platform can connect and work with each other\nI want to practice more and dig deeper"
   }
 ]

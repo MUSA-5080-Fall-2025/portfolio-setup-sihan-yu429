@@ -1,0 +1,2 @@
+"0","age_vars <- acs_vars_2022 %>%"
+"0","  filter(str_detect(label, ""[Mm]edian.*iage""))"

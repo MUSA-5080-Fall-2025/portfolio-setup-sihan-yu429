@@ -46,7 +46,13 @@ date: "2025-09-08"
 6. Question anomalies - investigate outliers and unusual patterns
 7. Document limitations - prepare honest communication about data quality
 
-###
+###join
+    left join: preserve everything from the first table input, if right doesnt't provide-shows NA in the joined one
+    right join: similar as the first one
+    full join: with all the rows from both table
+    inner join: only contain the row that in both table
+
+*the column name doesn't have to be the same, but the data type need to be the same
 
 ## Questions & Challenges
 - Which file I should go to when I make changes

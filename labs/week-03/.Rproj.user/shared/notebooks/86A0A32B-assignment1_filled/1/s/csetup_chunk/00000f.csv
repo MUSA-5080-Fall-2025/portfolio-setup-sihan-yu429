@@ -1,0 +1,6 @@
+"0","# Load required packages (hint: you need tidycensus, tidyverse, and knitr)"
+"0","library(tidycensus)"
+"2","错误: 意外的符号 于
+""# Load required packages (hint: you need tidycensus, tidyverse, and knitr)
+library""
+"
