@@ -1,6 +1,0 @@
-"0","# Search for population-related variables"
-"0","population_vars <- acs_vars_2022 %>%"
-"0","  filter(str_detect(label, ""Total.*population""))"
-"0",""
-"0","# Look at the results"
-"0","head(population_vars, 10)"

@@ -1,6 +1,0 @@
-"0",""
-"0","# Or search in the concept field"
-"0","pop_concept <- acs_vars_2022 %>%"
-"0","  filter(str_detect(concept, ""Total Population""))"
-"0",""
-"0","head(pop_concept)"

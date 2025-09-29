@@ -1,7 +1,0 @@
-"0","print(""Education variables:"")
-"
-"1","[1]"
-"1"," ""Education variables:"""
-"1","
-"
-"0","head(education_vars, 5)"

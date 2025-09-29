@@ -1,5 +1,0 @@
-"0","summary_county %>%"
-"0","  kable("
-"0","    caption = ""Summary of tracts with high MOE (>15%)"","
-"0","    col.names = c(""County"", ""N tracts"", ""High-MOE tracts"", ""% High-MOE"")"
-"0","  ) "
