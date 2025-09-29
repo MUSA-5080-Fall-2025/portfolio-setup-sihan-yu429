@@ -503,18 +503,19 @@ kable(summary_table,
 
 **Data Sources:** 
 - U.S. Census Bureau, American Community Survey 2018-2022 5-Year Estimates
-- Retrieved via tidycensus R package on [date]
+- Retrieved via tidycensus R package on 09/20/2025
 
 **Reproducibility:** 
-- All analysis conducted in R version [your version]
+- All analysis conducted in R version [4.5.1]
 - Census API key required for replication
-- Complete code and documentation available at: [your portfolio URL]
+- Complete code and documentation available at: https://musa-5080-fall-2025.github.io/portfolio-setup-sihan-yu429/assignments/assignments1/scripts/assignment1_template.html
+ 
 
 **Methodology Notes:**
-[Describe any decisions you made about data processing, county selection, or analytical choices that might affect reproducibility]
+Several key steps were made during the analysis. Counties were classified into “High,” “Moderate,” and “Low” confidence categories based on ACS income margins of error (MOE), using 5% and 10% cutoffs, where 5% indicates a precise estimate and beyond 10% signals caution. One county was intentionally selected from each reliability category to illustrate contrasts. This approach highlights differences but means specific findings are illustrative. At the tract level, demographic estimates were processed by calculating MOE percentages for racial/ethnic groups, and a 50% MOE flag was applied to identify particularly unreliable tracts. Although the assignment suggested a 15% threshold, using it would flag nearly all tracts, so the higher threshold focuses discussion on the worst data quality issues. These decisions shaped reliability categories and subsequent recommendations, providing conservative but clear examples of high-risk data areas and guiding interpretation of county- and tract-level results.
 
 **Limitations:**
-[Note any limitations in your analysis - sample size issues, geographic scope, temporal factors, etc.]
+The analysis is limited by sample size constraints, especially for smaller racial/ethnic groups at the tract level. This can result in high margins of error. Geographic coverage focuses on selected counties and tracts, so findings may not generalize elsewhere. Temporal scope is limited to the 2018–2022 ACS 5-year estimates, which may not capture rapid changes. Additionally, ACS survey data itself contains inherent inaccuracies due to sampling and nonresponse errors.
 
 ---
 
