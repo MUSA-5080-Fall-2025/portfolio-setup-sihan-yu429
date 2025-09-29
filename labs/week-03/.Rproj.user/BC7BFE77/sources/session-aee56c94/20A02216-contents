@@ -25,7 +25,7 @@ website:
       - text: Assignments
         menu:
           - href: assignments/assignments1/scripts/assignment1_template.qmd
-            text: Sample Census Analysis
+            text: "Assignment 1: Census Data Exploration"
 
  
    

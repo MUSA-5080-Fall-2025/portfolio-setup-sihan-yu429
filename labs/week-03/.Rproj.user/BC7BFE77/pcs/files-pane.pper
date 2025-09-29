@@ -1,9 +1,13 @@
 {
     "sortOrder": [
         {
+            "columnIndex": 4,
+            "ascending": false
+        },
+        {
             "columnIndex": 2,
             "ascending": true
         }
     ],
-    "path": "D:/MUSA5080_Github/portfolio-setup-sihan-yu429/assignments/assignments1/scripts"
+    "path": "D:/MUSA5080_Github/portfolio-setup-sihan-yu429"
 }
