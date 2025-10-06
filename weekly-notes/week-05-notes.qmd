@@ -1,0 +1,159 @@
+---
+title: "Week 5 Notes - Introduction to Linear Regression"
+date: "2025-10-06"
+---
+
+## Key Concepts Learned
+### The Statistical Learning Framework
+- Statistical learning = a set of approaches for estimating that relationship
+- Y=f(X)+ϵ
+  Where:
+  f = the systematic information X provides about Y
+  ε = random error (irreducible)
+  
+*Estimate f* 
+-WHY
+1. prediction(accuracy of predictions)
+2. inference(interpreting the model)
+-HOW
+1. Parametric Methods
+- Make an assumption about the functional form (e.g., linear)
+- Reduces problem to estimating a few parameters
+- Easier to interpret
+- This is what we’ll focus on
+- machine learning and ai are considered as parametric methods
+2. Non-Parametric Methods
+- Don’t assume a specific form
+- More flexible
+- Require more data
+- Harder to interpret
+- let the data determine the shape off
+
+*Parametric Approach: linear regression*
+Y≈β0+β1X1+β2X2+...+βpXp
+- task: Estimate the β coefficients using our sample data
+- method: Ordinary Least Squares (OLS)
+
+*satatistical significance*
+The logic:
+1. Null hypothesis (H₀): β₁ = 0 (no relationship)
+2. Our estimate: β₁ = 0.02
+3. Question: Could we get 0.02 just by chance if H₀ is true?
+t-statistic: How many standard errors away from 0?
+- Bigger |t| = more confidence the relationship is real
+p-value: Probability of seeing our estimate if H₀ is true
+- Small p → reject H₀, conclude relationship exists
+
+*how well the model*
+1. How well does it fit the data we used? (in-sample fit) - R²
+* R² alone doesn’t tell us if the model is trustworthy
+- scenarios: 
+underfitting (model too simple, high bias); 
+good fit(captures patterns without noise); 
+overfitting (memorizes training data, high variance) - might not generalize well because it follows noise
+
+2. How well would it predict new data? (out-of-sample performance)
+
+### checking assumptions
+*Assumption 1: Linearity*
+- What we assume: Relationship is actually linear
+- How to check: Residual plot (with ggplot)
+
+*Assumption 2: Constant Variance*
+- Heteroscedasticity: (unequal variance) Variance changes across X
+- impact: standard errors are wrong -> p-values misleading
+- formal test: Breusch-Pagan: p < 0.05: Evidence of heteroscedasticity
+
+*Assumption: Normality of Residuals*
+- What we assume: Residuals are normally distributed
+- Why it matters: 
+Less critical for point predictions (unbiased regardless)
+Important for confidence intervals and prediction intervals
+Needed for valid hypothesis tests (t-test, F-test) - (With Q-Q plot)
+
+*Assumption 3: No Multicollinearity*
+predictores shouldn't be too correlated
+- vif(model1)  # Variance Inflation Factor
+*Rule of thumb: VIF > 10 suggests problems
+Why it matters: Coefficients become unstable, hard to interpret
+
+*Assumption 4: No influential outliers*
+not all outliers are problems - only those witth high leverage AND large residuals
+- Visual Diagnostic
+- Identify influential points: High leverage + large residual = pulls regression line
+
+### Improving the Model
+- adding more predictors
+- log transformations
+- categorical variables
+
+
+## Coding Techniques
+### Building First model - linear model(lm)
+- fit the model
+model1 <- lm(median_incomeE ~ total_popE, data = pa_data)
+summary(model1)
+
+- interpreting coefficients
+p-value < 0.001 → Very unlikely to see this if true β₁ = 0
+-> e can reject the null hypothesis
+
+- Train/Test Split
+Solution: Hold out some data to test predictions
+* the 70% is randomly chose by computer -set.seed(123) hold the same set.seed(123)
+n <- nrow(pa_data)
+
+70% training, 30% testing
+train_indices <- sample(1:n, size = 0.7 * n)
+train_data <- pa_data[train_indices, ]
+test_data <- pa_data[-train_indices, ]
+
+Fit on training data only
+model_train <- lm(median_incomeE ~ total_popE, data = train_data)
+
+Predict on test data
+test_predictions <- predict(model_train, newdata = test_data)
+
+*cross-validation*
+better approach -multiple train/test splits
+library(caret)
+
+- 10-fold cross-validation
+train_control <- trainControl(method = "cv", number = 10)
+
+cv_model <- train(median_incomeE ~ total_popE,
+                  data = pa_data,
+                  method = "lm",
+                  trControl = train_control)
+
+cv_model$results
+
+key metrics: RMSE, R², MAE
+
+*Calculate prediction error (RMSE)*
+rmse_test <- sqrt(mean((test_data$median_incomeE - test_predictions)^2))
+rmse_train <- summary(model_train)$sigma
+
+cat("Training RMSE:", round(rmse_train, 0), "\n")
+
+
+
+
+## Summary: the regression workflow
+1. Understand the framework: What’s f? What’s the goal?
+2. Visualize first: Does a linear model make sense?
+3. Fit the model: Estimate coefficients
+4. Evaluate performance: Train/test split, cross-validation
+5. Check assumptions: Residual plots, VIF, outliers
+6. Improve if needed: Transformations, more variables
+7. Consider ethics: Who could be harmed by this model?
+
+
+## Questions & Challenges
+
+
+## Connections to Policy
+
+
+## Reflection
+
