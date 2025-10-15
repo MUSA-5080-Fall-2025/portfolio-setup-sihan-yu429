@@ -59,7 +59,7 @@ census_api_key("e173851c633e89c20243632174db68f63bac8856")
 
 pa_counties <- st_read(here("assignments/assignments2/data/Pennsylvania_County_Boundaries.shp"))
 hospitals <- st_read(here("assignments/assignments2/data/hospitals.geojson"))
-census_tracts <- tracts(state = "PA", cb = TRUE,, progress_bar = FALSE)
+census_tracts <- tracts(state = "PA", cb = TRUE, progress_bar = FALSE)
 
 
 # Standardize CRS
@@ -603,7 +603,8 @@ phl_tracts <- get_acs(
   state = "PA",
   county = "Philadelphia",
   geometry = TRUE,   
-  year = 2023
+  year = 2023,
+  progress_bar = FALSE
 ) %>%
   select(GEOID, NAME, variable, estimate, geometry) %>%
   tidyr::pivot_wider(names_from = variable, values_from = estimate) %>%
