@@ -1,7 +1,7 @@
 ---
 title: "Assignment 2: Spatial Analysis and Visualization"
 subtitle: "Healthcare Access and Equity in Pennsylvania"
-author: "Your Name Here"
+author: "Sihan Yu"
 date: today
 format: 
   html:
@@ -32,11 +32,6 @@ execute:
 
 **Which Pennsylvania counties have the highest proportion of vulnerable populations (elderly + low-income) living far from hospitals?**
 
-Your analysis should identify counties that should be priorities for healthcare investment and policy intervention.
-
-### Required Analysis Steps
-
-Complete the following analysis, documenting each step with code and brief explanations:
 
 #### Step 1: Data Collection (5 points)
 
@@ -48,6 +43,7 @@ Load the required spatial data:
 **Your Task:**
 ```{r}
 # Load required packages
+options(tigris_progress_bar = FALSE) 
 library(sf)
 library(tidyverse)
 library(tigris)
@@ -74,15 +70,10 @@ census_tracts <- st_transform(census_tracts, st_crs(pa_counties))
 
 # Number of hospitals
 n_hospitals <- nrow(hospitals)
-n_hospitals
+
 
 # Number of census tracts
 n_tracts <- nrow(census_tracts)
-n_tracts
-
-st_crs(pa_counties)
-st_crs(hospitals)
-st_crs(census_tracts)
 
 cat("Number of hospitals:", nrow(hospitals), "\n")
 cat("Number of census tracts:", nrow(census_tracts), "\n")
@@ -98,14 +89,14 @@ cat("Census tracts:", st_crs(census_tracts)$input, "\n")
 # Check that all data loaded correctly
 
 
+**Questions to answer:**<br>
+-  How many hospitals are in your dataset?<br>
+   There are 223 hospitals in the dataset.<br>
+-  How many census tracts?<br>
+   There are 3445 census tracts.<br>
+-  What coordinate reference system is each dataset in?<br>
+   They share the same coordinate reference system: WGS 84.
 
-**Questions to answer:**
-- How many hospitals are in your dataset? 
-  There are 223 hospitals in the dataset.
-- How many census tracts? 
-  There are 3445 census tract.
-- What coordinate reference system is each dataset in?
-  They share the same coordinate reference system as : WGS 84.
 ---
 
 #### Step 2: Get Demographic Data 
@@ -183,13 +174,13 @@ cat("Median income across all PA census tracts:", dollar(median_income_pa), "\n"
 ```
 
 
-**Questions to answer:**
-- What year of ACS data are you using?
-  I used data of 2022.
-- How many tracts have missing income data?
-  There are 62 tracts missing.
-- What is the median income across all PA census tracts?
-  The medium income across all PA census tracts is $70,188. 
+**Questions to answer:**<br>
+-  What year of ACS data are you using?<br>
+   I used data of 2022.<br>
+-  How many tracts have missing income data?<br>
+   There are 62 tracts missing.<br>
+-  What is the median income across all PA census tracts?<br>
+   The medium income across all PA census tracts is $70,188. 
 ---
 
 #### Step 3: Define Vulnerable Populations 
@@ -230,15 +221,15 @@ cat("Percentage of PA census tracts considered vulnerable:", round(vulnerable_pc
 
 ```
 
-**Questions to answer:**
-- What income threshold did you choose and why?
-  I used $55,923.50 has the income threshold. It is based on the percentiles of the general income data and this is the benchmarks of the bottom 25% of the income across Pennsylvania counties.
-- What elderly population threshold did you choose and why?
-  I used the same method as for the income threshold. I used the top 25% elderly share(23%) as my threshold. 
-- How many tracts meet your vulnerability criteria?
-  There are 165 tracts meet my vulnerability criteria.
-- What percentage of PA census tracts are considered vulnerable by your definition?
-  There are 4.8% of PA census tracts that are vulnerable.
+**Questions to answer:**<br>
+-  What income threshold did you choose and why?<br>
+   I used $55,923.50 has the income threshold. It is based on the percentiles of the general income data and this is the benchmarks of the bottom 25% of the income across Pennsylvania counties.<br>
+-  What elderly population threshold did you choose and why?<br>
+   I used the same method as for the income threshold. I used the top 25% elderly share(23%) as my threshold. <br>
+-  How many tracts meet your vulnerability criteria?<br>
+   There are 165 tracts meet my vulnerability criteria.<br>
+-  What percentage of PA census tracts are considered vulnerable by your definition?<br>
+   There are 4.8% of PA census tracts that are vulnerable.
 ---
 
 #### Step 4: Calculate Distance to Hospitals 
@@ -280,13 +271,13 @@ cat(
 - Calculate distances in miles
 - Explain why you chose your projection
 
-**Questions to answer:**
-- What is the average distance to the nearest hospital for vulnerable tracts?
-  The average distance is 4.75 miles.
-- What is the maximum distance?
-  The maximum distance is 19.16 miles.
-- How many vulnerable tracts are more than 15 miles from the nearest hospital?
-  There are 9 tracts are more than 15 miles from the nearest hospital.
+**Questions to answer:**<br>
+-  What is the average distance to the nearest hospital for vulnerable tracts?<br>
+   The average distance is 4.75 miles.<br>
+-  What is the maximum distance?<br>
+   The maximum distance is 19.16 miles.<br>
+-  How many vulnerable tracts are more than 15 miles from the nearest hospital?<br>
+   There are 9 tracts are more than 15 miles from the nearest hospital.
 ---
 
 #### Step 5: Identify Underserved Areas 
@@ -313,13 +304,13 @@ cat("Percentage of vulnerable tracts underserved:", round(perc_underserved, 2), 
 
 ```
 
-**Questions to answer:**
-- How many tracts are underserved?
-  There are 9 tracts are underserved.
-- What percentage of vulnerable tracts are underserved?
-  There are 5.45% of the vulnerable tracts are underserved.
-- Does this surprise you? Why or why not?
-  It doesn't surprise me. It shows that the hospitals are relatively well_distributed in Pennsylvania that only a small amount of vulnerable tracts are more than 15 miles from the nearest hospital. The few underserved tract are likely in rural areas, however, most of the population concentrated in urban and suburban counties.
+**Questions to answer:**<br>
+-  How many tracts are underserved?<br>
+   There are 9 tracts are underserved.<br>
+-  What percentage of vulnerable tracts are underserved?<br>
+   There are 5.45% of the vulnerable tracts are underserved.<br>
+-  Does this surprise you? Why or why not?<br>
+   It doesn't surprise me. It shows that the hospitals are relatively well_distributed in Pennsylvania that only a small amount of vulnerable tracts are more than 15 miles from the nearest hospital. The few underserved tract are likely in rural areas, however, most of the population concentrated in urban and suburban counties.
 ---
 
 #### Step 6: Aggregate to County Level
@@ -362,13 +353,13 @@ st_drop_geometry(county_stats)
 - Average distance to nearest hospital for vulnerable tracts
 - Total vulnerable population
 
-**Questions to answer:**
-- Which 5 counties have the highest percentage of underserved vulnerable tracts?
-  The 5 counties are Bradford, Forest, Juniata, Monroe, Sullivan.They all have 1 tract that is vulnerable and undeserved.
-- Which counties have the most vulnerable people living far from hospitals?
-  Allegheny County has the most vulnerable people ~51790 living far from hospitals.
-- Are there any patterns in where underserved counties are located?
-  The underserved counties are located in northern and central rural Pennsyvania with relatively low population density.
+**Questions to answer:**<br>
+-  Which 5 counties have the highest percentage of underserved vulnerable tracts?<br>
+   The 5 counties are Bradford, Forest, Juniata, Monroe, Sullivan.They all have 1 tract that is vulnerable and undeserved.<br>
+-  Which counties have the most vulnerable people living far from hospitals?<br>
+   Allegheny County has the most vulnerable people ~51790 living far from hospitals.<br>
+-  Are there any patterns in where underserved counties are located?<br>
+   The underserved counties are located in northern and central rural Pennsyvania with relatively low population density.
 ---
 
 #### Step 7: Create Summary Table 
@@ -625,14 +616,14 @@ summary(trees)
 ```
 
 
-**Questions to answer:**
-- What dataset did you choose and why?
-  I chose the Philadelphia parks dataset because public parks represent accessible green space for residents. Analyzing their distribution helps assess equity in green space access across different neighborhoods.
-- What is the data source and date?
-  The dataset comes from OpenDataPhilly, specifically the “PPR Program Sites” dataset, most recently updated in 2023.
-- How many features does it contain?
-  The dataset contains 171 park features.
-- What CRS is it in? Did you need to transform it?
+**Questions to answer:**<br>
+- What dataset did you choose and why?<br>
+  I chose the Philadelphia parks dataset because public parks represent accessible green space for residents. Analyzing their distribution helps assess equity in green space access across different neighborhoods.<br>
+- What is the data source and date?<br>
+  The dataset comes from OpenDataPhilly, specifically the “PPR Program Sites” dataset, most recently updated in 2023.<br>
+- How many features does it contain?<br>
+  The dataset contains 171 park features.<br>
+- What CRS is it in? Did you need to transform it?<br>
   The parks dataset was originally in WGS84 (EPSG:4326). For consistency with other spatial layers and to facilitate distance and area calculations, I transformed it to EPSG:3857 (Web Mercator projection).
 ---
 
