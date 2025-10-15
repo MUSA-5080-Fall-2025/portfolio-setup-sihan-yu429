@@ -3,7 +3,7 @@
     "path": "D:/MUSA5080_Github/portfolio-setup-sihan-yu429/assignments/assignments2/assignment2_template.qmd",
     "project_path": "assignments/assignments2/assignment2_template.qmd",
     "type": "quarto_markdown",
-    "hash": "2348892255",
+    "hash": "1428521586",
     "contents": "",
     "dirty": false,
     "created": 1760488092448.0,
@@ -12,15 +12,15 @@
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "716,24",
-        "scrollLine": "712"
+        "cursorPosition": "61,70",
+        "scrollLine": "50"
     },
     "folds": "",
-    "lastKnownWriteTime": 1760496569,
+    "lastKnownWriteTime": 1760497318,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1760496569364,
+    "last_content_update": 1760497318953,
     "read_only": false,
     "read_only_alternatives": []
 }

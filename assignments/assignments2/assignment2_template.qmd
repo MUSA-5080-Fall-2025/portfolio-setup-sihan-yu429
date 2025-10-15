@@ -43,7 +43,7 @@ Load the required spatial data:
 **Your Task:**
 ```{r}
 # Load required packages
-options(tigris_progress_bar = FALSE) 
+
 library(sf)
 library(tidyverse)
 library(tigris)
@@ -59,7 +59,7 @@ census_api_key("e173851c633e89c20243632174db68f63bac8856")
 
 pa_counties <- st_read(here("assignments/assignments2/data/Pennsylvania_County_Boundaries.shp"))
 hospitals <- st_read(here("assignments/assignments2/data/hospitals.geojson"))
-census_tracts <- tracts(state = "PA", cb = TRUE)
+census_tracts <- tracts(state = "PA", cb = TRUE,, progress_bar = FALSE)
 
 
 # Standardize CRS
