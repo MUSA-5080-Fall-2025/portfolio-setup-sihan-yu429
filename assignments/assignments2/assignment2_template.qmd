@@ -576,112 +576,7 @@ ggplot(vulnerable_tracts_proj, aes(x = distance_to_hospital_miles)) +
 
 ## Part 3: Bring Your Own Data Analysis 
 
-Choose your own additional spatial dataset and conduct a supplementary analysis.
 
-### Challenge Options
-
-Choose ONE of the following challenge exercises, or propose your own research question using OpenDataPhilly data (https://opendataphilly.org/datasets/). 
-
-**Note these are just loose suggestions to spark ideas - follow or make your own as the data permits and as your ideas evolve. This analysis should include bringing in your own dataset, ensuring the projection/CRS of your layers align and are appropriate for the analysis (not lat/long or geodetic coordinate systems). The analysis portion should include some combination of spatial and attribute operations to answer a relatively straightforward question**
-
----
-
-#### Education & Youth Services
-
-**Option A: Educational Desert Analysis**
-- **Data:** Schools, Libraries, Recreation Centers, Census tracts (child population)
-- **Question:** "Which neighborhoods lack adequate educational infrastructure for children?"
-- **Operations:** Buffer schools/libraries (0.5 mile walking distance), identify coverage gaps, overlay with child population density
-- **Policy relevance:** School district planning, library placement, after-school program siting
-
-**Option B: School Safety Zones**
-- **Data:** Schools, Crime Incidents, Bike Network
-- **Question:** "Are school zones safe for walking/biking, or are they crime hotspots?"
-- **Operations:** Buffer schools (1000ft safety zone), spatial join with crime incidents, assess bike infrastructure coverage
-- **Policy relevance:** Safe Routes to School programs, crossing guard placement
-
----
-
-#### Environmental Justice
-
-**Option C: Green Space Equity** 
-- **Data:** Parks, Street Trees, Census tracts (race/income demographics)
-- **Question:** "Do low-income and minority neighborhoods have equitable access to green space?"
-- **Operations:** Buffer parks (10-minute walk = 0.5 mile), calculate tree canopy or park acreage per capita, compare by demographics
-- **Policy relevance:** Climate resilience, environmental justice, urban forestry investment
----
-
-#### Public Safety & Justice
-
-**Option D: Crime & Community Resources**
-- **Data:** Crime Incidents, Recreation Centers, Libraries, Street Lights
-- **Question:** "Are high-crime areas underserved by community resources?"
-- **Operations:** Aggregate crime counts to census tracts or neighborhoods, count community resources per area, spatial correlation analysis
-- **Policy relevance:** Community investment, violence prevention strategies
----
-
-#### Infrastructure & Services
-
-**Option E: Polling Place Accessibility**
-- **Data:** Polling Places, SEPTA stops, Census tracts (elderly population, disability rates)
-- **Question:** "Are polling places accessible for elderly and disabled voters?"
-- **Operations:** Buffer polling places and transit stops, identify vulnerable populations, find areas lacking access
-- **Policy relevance:** Voting rights, election infrastructure, ADA compliance
-
----
-
-#### Health & Wellness
-
-**Option F: Recreation & Population Health**
-- **Data:** Recreation Centers, Playgrounds, Parks, Census tracts (demographics)
-- **Question:** "Is lack of recreation access associated with vulnerable populations?"
-- **Operations:** Calculate recreation facilities per capita by neighborhood, buffer facilities for walking access, overlay with demographic indicators
-- **Policy relevance:** Public health investment, recreation programming, obesity prevention
-
----
-
-#### Emergency Services
-
-**Option G: EMS Response Coverage**
-- **Data:** Fire Stations, EMS stations, Population density, High-rise buildings
-- **Question:** "Are population-dense areas adequately covered by emergency services?"
-- **Operations:** Create service area buffers (5-minute drive = ~2 miles), assess population coverage, identify gaps in high-density areas
-- **Policy relevance:** Emergency preparedness, station siting decisions
-
----
-
-#### Arts & Culture
-
-**Option H: Cultural Asset Distribution**
-- **Data:** Public Art, Museums, Historic sites/markers, Neighborhoods
-- **Question:** "Do all neighborhoods have equitable access to cultural amenities?"
-- **Operations:** Count cultural assets per neighborhood, normalize by population, compare distribution across demographic groups
-- **Policy relevance:** Cultural equity, tourism, quality of life, neighborhood identity
-
----
-
-### Data Sources
-
-**OpenDataPhilly:** https://opendataphilly.org/datasets/
-- Most datasets available as GeoJSON, Shapefile, or CSV with coordinates
-- Always check the Metadata for a data dictionary of the fields.
-
-**Additional Sources:**
-- **Pennsylvania Open Data:** https://data.pa.gov/
-- **Census Bureau (via tidycensus):** Demographics, economic indicators, commute patterns
-- **TIGER/Line (via tigris):** Geographic boundaries
-
-### Recommended Starting Points
-
-**If you're feeling confident:** Choose an advanced challenge with multiple data layers. 
-**If you are a beginner, choose something more manageable that helps you understand the basics**
-
-
-**If you have a different idea:** Propose your own question! Just make sure:
-- You can access the spatial data
-- You can perform at least 2 spatial operations
-
-### Your Analysis
 #### Environmental Justice
 
 **Option C: Green Space Equity** 
@@ -725,7 +620,7 @@ phl_tracts <- get_acs(
     minority_share = (total_pop - white_pop) / total_pop * 100
   )
 
-head(census_tracts_pa)
+head(phl_tracts)
 summary(trees)
 ```
 
@@ -766,7 +661,7 @@ Use at least TWO spatial operations to answer your research question.
 
 # buffer a 0.5 mile distance from the park polygon ~10min
 parks_buffer <- st_buffer(parks, dist = 800)
-parks_buffer <- st_transform(parks_buffer, st_crs(census_tracts_pa))
+parks_buffer <- st_transform(parks_buffer, st_crs(phl_tracts))
 
 
 
@@ -788,92 +683,53 @@ access_summary <- census_access %>%
 
 print(access_summary)
 
-
-
-
-
-
-
-
 ```
+
+
+
+
 ```{r}
 
 
-library(ggplot2)
-library(sf)
-library(dplyr)
-
-# 确保 CRS 一致
-census_access <- st_transform(census_access, 3857)   # 投影为3857
-parks_proj <- st_transform(parks, st_crs(census_access))
-
-# 给 census tracts 添加收入组
-census_access <- census_access %>%
-  mutate(
-    income_group = case_when(
-      median_income < median(median_income, na.rm = TRUE) ~ "Low Income",
-      TRUE ~ "High Income"
-    )
-  )
-
-# 绘图
 ggplot() +
-  # Census tracts
-  geom_sf(data = census_access, aes(fill = income_group), color = "white", size = 0.2) +
+  geom_sf(data = census_access, aes(fill = median_income), color = "white", size = 0.1) +
   
-  # 公园点
-  geom_sf(data = parks_proj, color = "#d7191c", size = 1.5, alpha = 0.8) +
+  geom_sf(
+    data = parks_buffer,
+    fill = "#32CD32", alpha = 0.25, color = NA
+  ) +
   
-  # 配色
-  scale_fill_manual(
-    name = "Income Group",
-    values = c("Low Income" = "#4575b4", "High Income" = "#fee090")
+  geom_sf(
+    data = parks_proj,
+    color = "#228B22", size = 1.2
+  ) +
+
+ scale_fill_gradientn(
+  name = "Median Household Income ($)",
+  colors = c("#4575b4", "#91bfdb", "#fdae61","orange", "#d73027")  # 蓝→浅蓝→浅橙→橙
   ) +
   
   labs(
-    title = "Philadelphia Census Tracts by Income and Park Locations",
-    subtitle = "Census tracts colored by income group; red dots = parks",
+    title = "Philadelphia Census Tracts by Income and Park Accessibility",
+    subtitle = "Red shaded areas represent 500 m park buffer zones",
     caption = "Data: OpenDataPhilly Parks, ACS 2021"
   ) +
-  theme_minimal() +
-  theme(
-    legend.position = "right",
-    plot.title = element_text(face = "bold", size = 14),
-    plot.subtitle = element_text(size = 11),
-    plot.caption = element_text(size = 8, color = "grey30")
-  )
+  
+  theme_minimal() 
+
 
 
 ```
 
 
-**Analysis requirements:**
-- Clear code comments explaining each step
-- Appropriate CRS transformations
-- Summary statistics or counts
-- At least one map showing your findings
-- Brief interpretation of results (3-5 sentences)
+
 
 **Your interpretation:**
 
-[Write your findings here]
+The table shows that park accessibility is 87.2% in high-income areas and slightly higher at 95.3% in low-income areas, indicating that not all high-income tracts are near parks, though there is a cluster of parks in moderate-income areas in South Philly. Maps show that parks and housing are more concentrated in the city center and low-income areas, while high-income areas in the northwest, northeast, and south are larger but have more dispersed parks. This likely reflects land use and planning: low-density neighborhoods with private yards leave fewer public parks. Overall, park distribution appears influenced more by urban layout and planning than by income alone.
 
 
 ## Finally - A few comments about your incorporation of feedback!
-Take a few moments to clean up your markdown document and then write a line or two or three about how you may have incorporated feedback that you recieved after your first assignment. 
+I really appreciated the detailed feedback on my first assignment. It suggested that I clean up unnecessary content and remove figures that didn’t need to be displayed. Following this advice, I tried to clean my Markdown document this time to try to make it look much cleaner and more professional. I hope to continue improving in this way with future assignments.
 
----
-
-## Submission Requirements
-
-**What to submit:**
-
-1. **Rendered HTML document posted to your course portfolio** with all code, outputs, maps, and text
-   - Use `embed-resources: true` in YAML so it's a single file
-   - All code should run without errors
-   - All maps and charts should display correctly
-
-**File naming:** `LastName_FirstName_Assignment2.html` and `LastName_FirstName_Assignment2.qmd`
-
----
 
