@@ -34,6 +34,9 @@ website:
             text: "Assignment 1: Census Data Exploration"
           - href: assignments/assignments2/assignment2_template.qmd
             text: "Assignment 2: Spatial Analysis and Visualization"
+          - href: assignments/midterm/Yu_Sihan_Appendix.qmd
+            text: "Midterm: Philadelphia Housing Model"
+           
 
  
    

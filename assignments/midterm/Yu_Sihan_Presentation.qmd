@@ -1,0 +1,552 @@
+---
+title: "Philadelphia Housing Price Prediction"
+subtitle: "Improving Property Tax Assessments"
+author: "Isabelle Li, Luciano Lu, Sihan Yu"
+format:
+  revealjs:
+    theme: simple
+    slide-number: true
+    smaller: true
+    code-overflow: wrap
+    slide-level: 2  
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+
+
+
+```{r setup, include=FALSE}
+# ---- Load packages ----
+library(tidyverse)
+library(sf)
+library(tidycensus)
+library(tigris)
+options(tigris_use_cache = TRUE, tigris_class = "sf")
+library(MASS)
+library(dplyr)
+library(scales)
+library(ggplot2)
+library(caret)
+library(lm.beta)
+library(knitr)
+
+# ---- Read datasets (adjust path if needed) ----
+# load data
+opa <- read_csv("data/opa_properties_public.csv")
+
+# filter sales (2023 - 2024)
+opa_clean <- opa %>%
+  mutate(sale_date = as.Date(sale_date)) %>%
+  filter(sale_date >= "2023-01-01" & sale_date <= "2024-12-31")
+
+# Select relevant variables 
+opa_var <- opa_clean %>%
+  dplyr::select(
+    sale_date, sale_price, market_value, building_code_description,
+    total_livable_area, number_of_bedrooms, number_of_bathrooms,
+    number_stories, garage_spaces, central_air, quality_grade,
+    interior_condition, exterior_condition, year_built,
+    zip_code, geographic_ward, census_tract, zoning, owner_1,
+    category_code_description, shape
+  )
+
+#filter to residential properties(SINGLE FAMILY)
+opa_var <- opa_var %>% 
+  filter(category_code_description == "SINGLE FAMILY") %>%
+  distinct() %>%
+  filter(
+    !is.na(total_livable_area) & total_livable_area > 0,
+    !is.na(year_built) & year_built > 1800 & year_built <= 2025,
+  )    
+
+# remove obvious errors & handle missing values, create house age
+opa_var <- opa_var %>%
+  mutate(
+    non_market = ((sale_price / market_value < 0.05) & sale_price < 2000),
+    house_age = 2025 - year_built
+  )
+
+opa_selected <- opa_var %>% 
+  filter(
+    non_market==0
+  )   
+
+opa_selected <- opa_selected %>%
+  filter(sale_price <= quantile(sale_price, 0.98, na.rm = TRUE))
+
+
+opa_sf <- st_as_sf(opa_selected, wkt = "shape", crs = 2272) %>%
+  st_transform(4326)
+
+# Load Census data for Philadelphia tracts
+# Load Census data for Philadelphia tracts
+philly_census <- get_acs(
+  geography = "tract",
+  variables = c(
+    total_pop = "B01003_001",
+    black = "B02001_003",
+    ba_degree = "B15003_022",
+    total_edu = "B15003_001",
+    
+    median_income = "B19013_001",
+   
+    labor_force = "B23025_003",
+    unemployed = "B23025_005"
+  ),
+  year = 2023,
+  state = "PA",
+  county = "Philadelphia",
+  geometry = TRUE
+) %>%
+  dplyr::select(GEOID, variable, estimate, geometry) %>%   # ← 用 dplyr::
+  tidyr::pivot_wider(names_from = variable, values_from = estimate) %>%
+  dplyr::mutate(
+    ba_rate = 100 * ba_degree / total_edu,
+    unemployment_rate = 100 * unemployed / labor_force,
+    black_share = 100 * black/total_pop
+  ) %>%
+  st_transform(st_crs(opa_sf))
+
+# Spatial join of OPA data with Census data
+opa_census <- st_join(opa_sf, philly_census, join = st_within) %>%
+  filter(!is.na(median_income))
+
+Transit <- read_csv("data/Transit.csv")
+transit_sf <- st_as_sf(Transit, coords = c("Lon", "Lat"), crs = 4326) %>%
+  st_transform(st_crs(opa_census))
+radius <- 400
+opa_census$transit_count <- lengths(st_is_within_distance(opa_census, transit_sf, dist = radius))
+read_csv("data/Transit.csv", show_col_types = FALSE)
+
+recreation <- read_csv("data/recreation.csv") 
+recreation_sf <- st_as_sf(recreation, coords = c("X", "Y"), crs = 4326) %>% st_transform(st_crs(opa_census)) 
+radius_rec <- 1200 
+opa_census$recreation_count <- lengths(st_is_within_distance(opa_census, recreation_sf, dist = radius_rec)) 
+read_csv("data/recreation.csv", show_col_types = FALSE)
+
+#recreation dummy 0, 1-3, 4-10+
+opa_census$recreation_dummy <- case_when(
+  opa_census$recreation_count == 0 ~ "None",
+  opa_census$recreation_count >= 1 & opa_census$recreation_count <= 3 ~ "Low",
+  opa_census$recreation_count >= 4 & opa_census$recreation_count <= 8 ~ "Medium",
+  opa_census$recreation_count >= 9 ~ "High"
+)
+
+#add center city as a dummy
+center_city <- st_read("data/CCD_BOUNDARY.geojson", quiet = TRUE) %>%
+  st_transform(st_crs(opa_census))
+
+opa_census$center_city_dummy <- as.numeric(
+  lengths(st_intersects(opa_census, center_city)) > 0
+)
+
+crime <- read_csv("data/crime.csv") %>% 
+  filter(!is.na(lat) & !is.na(lng)) 
+crime_sf <- st_as_sf(crime, coords = c("lng", "lat"), crs = 4326) %>%
+  st_transform(st_crs(opa_census)) 
+radius_cri <- 400 
+opa_census$crime_count <- lengths(st_is_within_distance(opa_census, crime_sf, dist = radius_cri))
+
+# find the distance of the nearest hospital
+hospital_sf <- st_read("data/hospitals.geojson", quiet = TRUE) %>%
+  st_transform(st_crs(opa_census))
+
+nearest_hospital_index <- st_nearest_feature(opa_census, hospital_sf)
+
+opa_census$nearest_hospital_m <- st_distance(
+  opa_census,
+  hospital_sf[nearest_hospital_index, ],
+  by_element = TRUE
+)
+
+opa_census$nearest_hospital_m <- as.numeric(opa_census$nearest_hospital_m)
+
+opa_census <- opa_census %>%
+  mutate(
+    has_garage = if_else(!is.na(garage_spaces) & garage_spaces > 0, 1L, 0L)
+  )
+
+
+model1 <- lm(sale_price ~ total_livable_area + number_of_bedrooms +
+               number_of_bathrooms + house_age + I(house_age^2),
+             data = opa_census)
+
+
+model4 <- lm(sale_price ~ total_livable_area + number_of_bedrooms +number_of_bathrooms + house_age + I(house_age^2) +
+               median_income + ba_rate + crime_count*unemployment_rate + black_share +  + has_garage+
+               center_city_dummy + recreation_dummy +
+               transit_count + nearest_hospital_m + I(nearest_hospital_m^2),
+             data = opa_census)
+
+```
+
+```{r}
+
+```
+
+
+# Introduction
+
+- Why this matter  
+- What we did  
+- Goal
+
+
+
+
+## Data Sources{.smaller}
+
+| Source | Description | Key Variables / Features |
+|--------|-------------|-------------------------|
+| **OPA Property Sales** | 2023–2024 residential transactions | `sale_price`, `total_livable_area`, `number_of_bedrooms`, `number_of_bathrooms`, `house_age`, `garage_spaces` |
+| **Census ACS 2023** | Socioeconomic indicators by tract | `median_income`, `ba_rate`, `unemployment_rate`,  `total_pop` |
+| **OpenDataPhilly – Transit** | Public transit locations | Count of stops within 400 m buffer (`transit_count`) |
+| **OpenDataPhilly – Recreation / Parks** | Recreation locations | Count within 1200 m buffer (`recreation_count`), categorical dummy (`recreation_dummy`) |
+| **OpenDataPhilly – Crime** | Crime incidents | Count of incidents within 400 m (`crime_count`) |
+| **Hospitals** | Hospital locations | Distance to nearest hospital (`nearest_hospital_m`) |
+| **Center City boundary** | Geojson polygon | Binary dummy (`center_city_dummy`) |
+
+
+
+
+
+## Data Overview{.smaller}
+
+```{r}
+#| out-width: "80%"
+#| fig-align: "center"
+
+library(ggplot2)
+library(patchwork)  
+
+
+p_raw <- ggplot(opa_var, aes(x = sale_price)) +
+  geom_histogram(bins = 50, fill = "hotpink", color = "black") +
+  geom_vline(aes(xintercept = median(sale_price)), linetype = "dashed") +
+  labs(title = "Raw Distribution",
+       x = "Sale Price", y = "Count") +
+  scale_x_continuous(labels = scales::label_dollar())
+
+
+p_cut <- opa_census %>%
+  ggplot(aes(x = sale_price)) +
+  geom_histogram(bins = 50, fill = "skyblue", color = "black") +
+  geom_vline(aes(xintercept = median(sale_price)), linetype = "dashed") +
+  labs(title = "Trimmed Distribution (selected)",
+       x = "Sale Price", y = "Count") +
+  scale_x_continuous(labels = scales::label_dollar())
+
+
+print(
+p_raw / p_cut +
+plot_annotation(
+title = "Sale Price Distributions",
+theme = theme(
+plot.title = element_text(
+size = 14,
+face = "bold",
+hjust = 0.5,
+margin = margin(b = 10)
+)
+)
+)
+)
+```
+
+
+
+## Where Are Expensive Homes?{.smaller}
+```{r}
+#| out-width: "80%"
+#| fig-align: "center"
+
+library(ggplot2)
+
+opa_census <- opa_census %>%
+  mutate(price_quartile = ntile(sale_price, 4))
+
+
+ggplot() +
+  geom_sf(data = philly_census, fill = "lightgrey", color = "white") +
+  geom_sf(data = opa_census, aes(color = factor(price_quartile)), size = 0.1, alpha = 0.7) +
+  scale_color_viridis_d(
+    option = "plasma",
+    direction = -1,
+    labels = c("0%-25%", "25%-50%", "50%-75%", "75%-100%")
+  ) +
+  theme_minimal() +
+  labs(
+    title = "Housing Sales in Philadelphia (2023–2024)",
+    color = "Sale Price Quartile"
+  ) +
+  guides(color = guide_legend(override.aes = list(size = 3)))
+```
+
+
+
+
+
+## What Drives Prices?{.smaller}
+
+```{r}
+#| out-width: "80%"
+#| fig-align: "center"
+
+
+p1 <- ggplot(opa_census %>% st_drop_geometry(),
+       aes(x = crime_count, y = sale_price)) +
+  geom_point(alpha = 0.3, color = "grey60", size = 1) +
+  geom_smooth(method = "lm", color = "darkorange", linewidth = 1.2, se = FALSE) +
+  scale_y_continuous(labels = label_dollar()) +
+  labs(
+    title = "Relationship Between Nearby Crime and Home Sale Price",
+    x = "Number of Crimes within 400m",
+    y = "Sale Price"
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    panel.grid.minor = element_blank(),
+    panel.grid.major.x = element_blank(),
+    axis.text = element_text(color = "grey30"),
+    axis.title = element_text(color = "grey20")
+  )
+
+
+opa_interact <- opa_census %>% 
+  st_drop_geometry() %>%
+  mutate(
+    unemp_group = ntile(unemployment_rate, 2),
+    unemp_group = factor(unemp_group,
+                         labels = c("Low Unemployment", "High Unemployment"))
+  )
+
+
+p2 <- ggplot(opa_interact, aes(x = crime_count, y = sale_price, color = unemp_group)) +
+  geom_point(alpha = 0.25, size = 0.8) +
+  geom_smooth(method = "lm", se = FALSE, linewidth = 1.2) +
+  scale_y_continuous(labels = label_dollar()) +
+  scale_color_viridis_d(option = "plasma", direction = -1) +
+  labs(
+    title = "Interaction: Crime × Unemployment Level",
+    x = "Number of Crimes within 400m",
+    y = "Sale Price",
+    color = "Unemployment Group"
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    legend.position = "top",
+    panel.grid.minor = element_blank(),
+    panel.grid.major.x = element_blank()
+  )
+
+
+p1 / p2
+
+```
+
+
+
+
+
+## Top Predictors{.smaller}
+
+```{r}
+#| out-width: "85%"
+#| fig-align: "center"
+#| warning: false
+#| message: false
+
+model4_std <- lm.beta(model4)
+
+coef_std <- broom::tidy(model4_std) %>%
+  filter(term != "(Intercept)") %>%
+  mutate(Standardized = model4_std$standardized.coefficients[term])
+
+top5_std <- coef_std %>%
+  arrange(desc(abs(Standardized))) %>%
+  slice(1:10)
+
+top5_std %>%
+  mutate(term = reorder(term, abs(Standardized))) %>%
+  ggplot(aes(x = term, y = Standardized, fill = Standardized > 0)) +
+  geom_col(width = 0.6, show.legend = FALSE) +
+  coord_flip() +
+  geom_text(aes(label = round(Standardized, 3)),
+            hjust = ifelse(top5_std$Standardized > 0, -0.1, 1.1),
+            size = 3.8) +
+  scale_fill_manual(values = c("skyblue", "hotpink")) +
+  labs(
+    title = "Top 10 Standardized Coefficients from Model 4",
+    x = "",
+    y = "Standardized Coefficient (β)"
+  ) +
+  theme_minimal(base_size = 13) +
+  geom_hline(yintercept = 0, color = "black", linewidth = 0.8) +
+  expand_limits(y = c(-max(abs(top5_std$Standardized)) * 1.2, 
+                      max(abs(top5_std$Standardized)) * 1.2)) +
+  theme(
+    plot.title = element_text(face = "bold", hjust = 0.5),
+    panel.grid.minor = element_blank()
+  )
+
+```
+
+
+
+
+
+## Model Performance{.smaller}
+
+```{r}
+#| out-width: "75%"
+#| fig-align: "center"
+
+
+library(ggplot2)
+library(patchwork)
+library(scales)
+
+
+rmse1 <- 153662   # Model 1 RMSE
+r21   <- 0.45     # Model 1 R²
+rmse4 <- 129019   # Model 4 RMSE
+r24   <- 0.61     # Model 4 R²
+
+plot_df1 <- opa_census %>%
+  mutate(
+    pred = predict(model1, newdata = opa_census),
+    obs = sale_price
+  ) %>%
+  dplyr::select(pred, obs)
+
+
+plot_df4 <- opa_census %>%
+  mutate(
+    pred = predict(model4, newdata = opa_census),
+    obs = sale_price
+  ) %>%
+  dplyr::select(pred, obs)
+
+p1 <- ggplot(plot_df1, aes(x = pred, y = obs)) +
+  geom_point(alpha = 0.3, color = "hotpink") +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "black",linewidth = 0.8) +
+  labs(
+    title = "Model 1",
+    subtitle = paste0("RMSE = ", scales::comma(rmse1), 
+                      ", R² = ", round(r21, 2))
+  ) +
+  theme_minimal() +
+  coord_fixed()
+
+
+p4 <- ggplot(plot_df4, aes(x = pred, y = obs)) +
+  geom_point(alpha = 0.3, color = "skyblue") +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "black",linewidth = 0.8) +
+  labs(
+    title = "Model 4",
+    subtitle = paste0("RMSE = ", scales::comma(rmse4), 
+                      ", R² = ", round(r24, 2))
+  ) +
+  theme_minimal() +
+  coord_fixed()
+
+p1 + p4 +
+  plot_annotation(
+    title = "Predicted vs. Actual Sale Prices",
+    subtitle = "Comparison between Model 1 and Model 4",
+    theme = theme(plot.title = element_text(size = 16, face = "bold"),
+                  plot.subtitle = element_text(size = 12))
+  )
+
+```
+
+
+
+
+
+## Hardest to Predict{.smaller}
+```{r}
+#| out-width: "80%"
+#| fig-align: "center"
+
+# load the neighborhood data by ward
+wards <- st_read("data/Political_Wards.geojson", quiet = TRUE) %>%
+  st_transform(st_crs(opa_census))
+
+opa_census$pred_price <- predict(model4, newdata = opa_census)
+
+opa_ward <- st_join(opa_census, wards["ward_num"])
+
+ward_summary <- opa_ward %>%
+  st_drop_geometry() %>%
+  group_by(ward_num) %>%
+  summarise(
+    mean_actual = mean(sale_price, na.rm = TRUE),
+    mean_pred = mean(pred_price, na.rm = TRUE),
+    median_pred = median(pred_price, na.rm = TRUE),
+    n_properties = n()
+  ) %>%
+  mutate(residual_mean = mean_actual - mean_pred) %>%  
+  arrange(desc(residual_mean))
+
+ward_plot_data <- wards %>%
+  left_join(ward_summary, by = "ward_num")
+
+ggplot(ward_plot_data) +
+  geom_sf(aes(fill = residual_mean), color = "white", size = 0.2) +
+  scale_fill_gradient2(
+    low = "#4575B4",
+    mid = "white",
+    high = "#D73027",
+    midpoint = 0,
+    labels = scales::label_dollar()
+  ) +
+  labs(
+    title = "Mean Prediction Residuals by Ward",
+    subtitle = "Positive = Underestimation | Negative = Overestimation",
+    fill = "Actual - Predicted"
+  ) +
+  theme_minimal(base_size = 11) +
+  theme(
+    axis.text = element_blank(),
+    axis.ticks = element_blank(),
+    panel.grid = element_blank()
+  )
+
+
+```
+
+
+
+
+# Recommendations
+
+- Ensure Fair and Transparent Property Valuation
+
+- Build Community Resilience through Economic Revitalization
+
+- Promote Spatial Equity in Access to Opportunity
+
+
+
+# Limitations & Next Steps
+
+- Limited Performance on High-End Properties
+
+- Spatial but Not Temporal
+
+- Data Incompleteness and Systematic Bias
+
+
+# Questions?
+
+**Thank You!**  
+
+<small>Contact: isabli@upenn.edu · GitHub: [https://github.com/Isabelliiii]</small>
+
+<small>Contact: yusihan@upenn.edu · GitHub: [https://github.com/sihan-yu429]</small>
+
+<small>Contact: lu25@upenn.edu · GitHub: [https://github.com/lluluciano0505]</small>
