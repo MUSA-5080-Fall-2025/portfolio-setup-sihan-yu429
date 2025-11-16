@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2025-10-20">
 
-<title>week-07-notes – Sihan Yu- MUSA 5080 Portfolio</title>
+<title>Week 1 Notes - Course Introduction – Sihan Yu- MUSA 5080 Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -171,15 +172,31 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#key-concepts-learned" id="toc-key-concepts-learned" class="nav-link active" data-scroll-target="#key-concepts-learned">Key Concepts Learned</a>
+  <ul class="collapse">
+  <li><a href="#spatial-autocorrelation-of-the-errors" id="toc-spatial-autocorrelation-of-the-errors" class="nav-link" data-scroll-target="#spatial-autocorrelation-of-the-errors">spatial autocorrelation of the errors</a></li>
+  </ul></li>
+  <li><a href="#coding-techniques" id="toc-coding-techniques" class="nav-link" data-scroll-target="#coding-techniques">Coding Techniques</a>
+  <ul class="collapse">
+  <li><a href="#library-spdep" id="toc-library-spdep" class="nav-link" data-scroll-target="#library-spdep">library: spdep</a></li>
+  </ul></li>
+  <li><a href="#questions-challenges" id="toc-questions-challenges" class="nav-link" data-scroll-target="#questions-challenges">Questions &amp; Challenges</a></li>
+  <li><a href="#connections-to-policy" id="toc-connections-to-policy" class="nav-link" data-scroll-target="#connections-to-policy">Connections to Policy</a></li>
+  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection">Reflection</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">week-07-notes</h1>
+<h1 class="title">Week 1 Notes - Course Introduction</h1>
 </div>
 
 
@@ -187,6 +204,12 @@ ul.task-list li input[type="checkbox"] {
 <div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 20, 2025</p>
+    </div>
+  </div>
   
     
   </div>
@@ -196,8 +219,69 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<section id="key-concepts-learned" class="level2">
+<h2 class="anchored" data-anchor-id="key-concepts-learned">Key Concepts Learned</h2>
+<section id="spatial-autocorrelation-of-the-errors" class="level3">
+<h3 class="anchored" data-anchor-id="spatial-autocorrelation-of-the-errors">spatial autocorrelation of the errors</h3>
+<ol type="1">
+<li>random errors (good errors):</li>
+</ol>
+<ul>
+<li>No systematic pattern</li>
+<li>Scattered across space</li>
+<li>Prediction equally good everywhere</li>
+<li>Model captures key relationships</li>
+</ul>
+<ol start="2" type="1">
+<li>Cluster errors (bad)</li>
+</ol>
+<ul>
+<li>Spatial pattern visible</li>
+<li>Under/over-predict in areas</li>
+<li>Model misses something about location</li>
+<li>Need more spatial features!</li>
+</ul>
+<p><em>spatial lag of errors</em> - spatial lag = averrage value of neighbors - create the spatial lag: my error vs avg error of 5r nearest neighbors</p>
+<p><em>Moran’s I</em> - +1 = Perfect positive correlation (clustering) - 0 = Random spatial pattern - -1 = Perfect negative correlation (dispersion)</p>
+<ul>
+<li>neighbors:</li>
+</ul>
+<ol type="1">
+<li>Contiguity: Polygons that share a border; Queen vs.&nbsp;Rook</li>
+<li>Distance: All within X meters; Fixed threshold</li>
+<li>k-Nearest” Closest k points; Adaptive distance</li>
+</ol>
+<p><em>spatial lag/error models</em> - no spatial lag models for prediction: simultaneity problem; prediction paradox; data leakage in cv</p>
+</section>
+</section>
+<section id="coding-techniques" class="level2">
+<h2 class="anchored" data-anchor-id="coding-techniques">Coding Techniques</h2>
+<section id="library-spdep" class="level3">
+<h3 class="anchored" data-anchor-id="library-spdep">library: spdep</h3>
+</section>
+</section>
+<section id="questions-challenges" class="level2">
+<h2 class="anchored" data-anchor-id="questions-challenges">Questions &amp; Challenges</h2>
+<ul>
+<li>Which file I should go to when I make changes</li>
+<li>The whole process of making changes</li>
+</ul>
+</section>
+<section id="connections-to-policy" class="level2">
+<h2 class="anchored" data-anchor-id="connections-to-policy">Connections to Policy</h2>
+<ul>
+<li>Upload my work to my portfolio for visualization</li>
+</ul>
+</section>
+<section id="reflection" class="level2">
+<h2 class="anchored" data-anchor-id="reflection">Reflection</h2>
+<ul>
+<li>How different platform can connect and work with each other</li>
+<li>I want to practice more and dig deeper</li>
+</ul>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

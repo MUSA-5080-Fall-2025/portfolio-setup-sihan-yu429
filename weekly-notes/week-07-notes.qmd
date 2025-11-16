@@ -1,5 +1,51 @@
 ---
-title: "week-07-notes"
-format: html
+title: "Week 1 Notes - Course Introduction"
+date: "2025-10-20"
 ---
 
+## Key Concepts Learned
+### spatial autocorrelation of the errors
+1. random errors (good errors): 
+- No systematic pattern
+- Scattered across space
+- Prediction equally good everywhere
+- Model captures key relationships
+
+2. Cluster errors (bad)
+- Spatial pattern visible
+- Under/over-predict in areas
+- Model misses something about location
+- Need more spatial features!
+
+*spatial lag of errors*
+- spatial lag = averrage value of neighbors
+- create the spatial lag: my error vs avg error of 5r nearest neighbors
+
+*Moran's I*
+- +1 = Perfect positive correlation (clustering)
+- 0 = Random spatial pattern
+- -1 = Perfect negative correlation (dispersion)
+
+- neighbors:
+1. Contiguity: Polygons that share a border; Queen vs. Rook
+2. Distance: All within X meters; Fixed threshold
+3. k-Nearest" Closest k points; Adaptive distance
+
+*spatial lag/error models*
+- no spatial lag models for prediction: simultaneity problem; prediction paradox; data leakage in cv
+
+
+
+## Coding Techniques
+### library: spdep
+
+## Questions & Challenges
+- Which file I should go to when I make changes
+- The whole process of making changes
+
+## Connections to Policy
+- Upload my work to my portfolio for visualization
+
+## Reflection
+- How different platform can connect and work with each other
+- I want to practice more and dig deeper
