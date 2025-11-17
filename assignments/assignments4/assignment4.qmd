@@ -28,7 +28,7 @@ In this study, pothole repair requests are used as spatial indicators to support
 
 After preparing the required packages, this step imports the key spatial datasets, including the 311 pothole request data, the Chicago boundary, police districts, and burglary records. The goal is to understand where potholes occur across the city and whether they exhibit spatial clustering. Visualizing these patterns helps identify neighborhoods with greater infrastructure issues, which is important because such areas may also experience higher burglary activity. This initial exploration ensures that the base data are accurate and provides a foundation for examining the spatial relationship between potholes and crime in later steps.
 
-## Setup
+## 2.1 Setup
 
 ```{r}
 #| message: false
@@ -77,7 +77,7 @@ theme_crime <- function(base_size = 11) {
 theme_set(theme_crime())
 ```
 
-## Load 311 data and Chicago spatial boundaries
+## 2.2 Load 311 data and Chicago spatial boundaries
 
 ```{r}
 # Load 311 request - Potholes Reported data
@@ -118,7 +118,7 @@ burglaries <- st_read("data/burglaries.shp",  quiet = TRUE) %>%
   st_transform('ESRI:102271')
 ```
 
-## Visualize Point Data
+## 2.3 Visualize Point Data
 
 ```{r}
 # Simple point map
@@ -128,7 +128,8 @@ p1 <- ggplot() +
   labs(
     title = "Reported Pot Holes Locations",
     subtitle = paste0("Chicago 2017, n = ", nrow(Pot_Holes))
-  )
+  )+
+  theme_void()
 
 # Density surface using modern syntax
 p2 <- ggplot() + 
@@ -147,7 +148,8 @@ p2 <- ggplot() +
   labs(
     title = "Density Surface",
     subtitle = "Kernel density estimation"
-  )
+  )+
+  theme_void()
 
 # Combine plots using patchwork (modern approach)
 p1 + p2 + 
@@ -164,7 +166,7 @@ p1 + p2 +
 
 In this step, I create a 500 × 500 m fishnet grid across Chicago and aggregate both pothole and burglary point data into the grid cells, producing count values for each location. This transforms the raw point data into a uniform spatial unit, making it suitable for later regression modeling.
 
-## 500\*500m Fishnet Creation
+## 3.1 500\*500m Fishnet Creation
 
 ```{r}
 # Create 500m x 500m grid
@@ -180,7 +182,7 @@ fishnet <- st_make_grid(
 fishnet <- fishnet[chicagoBoundary, ]
 ```
 
-## Aggregate Violation to Grid
+## 3.2 Aggregate Violation to Grid
 
 ```{r}
 # Spatial join: which cell contains each violation?
@@ -207,7 +209,7 @@ fishnet <- fishnet %>%
 
 ```
 
-## Visualize Distribution
+## 3.3 Visualize Distribution
 
 ```{r}
 # Visualize aggregated counts
@@ -224,7 +226,8 @@ ggplot() +
     title = "Pot Holes Counts by Grid Cell",
     subtitle = "500m x 500m cells, Chicago 2017"
   ) +
-  theme_crime()
+  theme_crime()+
+  theme_void()
 ```
 
 **Interpretation:** The fishnet map shows that pothole reports are not evenly distributed across Chicago. Higher counts appear in the northern and central parts of the city, while the southern area generally shows lower reporting levels. Localized hotspots also emerge along major road corridors. This suggests that road quality issues vary across neighborhoods, and pothole activity may serve as a proxy for broader spatial differences in infrastructure conditions.
@@ -237,7 +240,7 @@ The **K-Nearest Neighbor** feature measures how close each grid cell is to recen
 
 **Local Moran’s I** identifies spatial clusters of high and low pothole activity. These clusters help uncover neighborhood-level infrastructure patterns that may relate to burglary risk.
 
-## K-Nearest Neighbor Features
+## 4.1 K-Nearest Neighbor Features
 
 ```{r}
 # Calculate mean distance to 3 nearest Pot Holes
@@ -274,7 +277,7 @@ kable(
 
 **Interpretation:** The KNN summary indicates strong spatial variation: some cells are only a few meters from potholes, while others are over 1 km away. The median distance of about 87 m suggests that pothole activity is dense and widely distributed across the city.
 
-## Local Moran’s I
+## 4.2 Local Moran’s I
 
 ```{r}
 # Function to calculate Local Moran's I
@@ -313,7 +316,7 @@ fishnet <- calculate_local_morans(fishnet, "countPotholes", k = 5)
 
 ```
 
-## Hot Spots and Cold Spots
+## 4.3 Hot Spots and Cold Spots
 
 ```{r}
 # Visualize hot spots
@@ -337,10 +340,11 @@ ggplot() +
     title = "Local Moran's I: Pothole Clusters",
     subtitle = "High-High = Hot spots of disorder"
   ) +
-  theme_crime()
+  theme_crime()+
+  theme_void()
 ```
 
-## Distance-to-Hotspot
+## 4.4 Distance-to-Hotspot
 
 ```{r}
 # Get centroids of "High-High" cells (hot spots)
@@ -371,15 +375,15 @@ if (nrow(hotspots) > 0) {
 }
 ```
 
-::: callout-note
-**Local Moran's I** identifies:
-
--   **High-High**: Hot spots (high values surrounded by high values)
--   **Low-Low**: Cold spots (low values surrounded by low values)
--   **High-Low / Low-High**: Spatial outliers
-:::
-
 **Interpretation:**
+
+Local Moran’s I results are interpreted as follows:
+
+-    **High–High** areas represent clusters of high burglary counts (hot spots).
+
+-    **Low–Low** areas represent clusters of consistently low values (cold spots).
+
+-    **High–Low** and **Low–High** areas indicate spatial outliers.
 
 The LISA results show clear clusters of pothole activity across Chicago. High–High clusters (hotspots) appear mainly in the northern and central neighborhoods, indicating concentrated infrastructure issues. In contrast, the southern part of the city shows several Low–Low clusters, reflecting consistently low levels of reported potholes. The mix of High–Low and Low–High outliers suggests localized transitions between well-maintained and more deteriorated areas. Overall, the spatial pattern confirms that pothole activity is not random but forms distinct neighborhood clusters.
 
@@ -387,7 +391,7 @@ The LISA results show clear clusters of pothole activity across Chicago. High–
 
 This section I model burglary counts using two standard count models—Poisson and Negative Binomial. Count data often show overdispersion (variance \> mean), so fitting both models allows us to compare performance and choose the most appropriate specification for prediction. AIC is used to evaluate which model provides a better fit.
 
-## Poisson Regression
+## 5.1 Poisson Regression
 
 ```{r}
 # Join district information to fishnet
@@ -422,7 +426,7 @@ model_poisson <- glm(
 )
 
 tidy(model_poisson) %>%
-  kable(digits = 4, caption = "Poisson Regression Coefficients") %>%
+  kable(digits = 2, caption = "Poisson Regression Coefficients") %>%
   kable_styling(bootstrap_options = c("striped", "hover"))
 ```
 
@@ -450,7 +454,7 @@ Conclusion:
 
 ```
 
-## Negative Binomial Regression
+## 5.2 Negative Binomial Regression
 
 ```{r}
 # Fit Negative Binomial model
@@ -461,13 +465,13 @@ model_nb <- glm.nb(
 )
 
 tidy(model_nb) %>%
-  kable(digits = 4, caption = "Negative Binomial Regression Coefficients") %>%
+  kable(digits = 2, caption = "Negative Binomial Regression Coefficients") %>%
   kable_styling(bootstrap_options = c("striped", "hover"))
 
 
 ```
 
-## Model Fit(AIC)
+## 5.3 Model Fit(AIC)
 
 ```{r}
 # Compare AIC (lower is better)
@@ -498,7 +502,7 @@ knitr::kable(
 
 After comparing both models, the Negative Binomial model is selected because it had the lower AIC. Using this model, I then performed Leave-One-Group-Out cross-validation with police districts as the grouping unit. In each fold, one district was held out, the model was trained on the remaining districts, and predictions were generated for the excluded area. This method reduces spatial leakage and provides a more reliable measure of how well the model performs across different parts of the city.
 
-## Leave-One-Group-Out cross-validation(LOGO CV)
+## 6.1 Leave-One-Group-Out cross-validation(LOGO CV)
 
 ```{r}
 # Get unique districts
@@ -549,15 +553,23 @@ for (i in seq_along(districts)) {
 
 ```
 
-## Reported Metrics
+## 6.2 Reported Metrics
 
 ```{r}
 # Show results
-cv_results %>%
+cv_results %>% 
   arrange(desc(mae)) %>%
+  rename(
+    Fold = fold,
+    `Test District` = test_district,
+    `Test Count` = n_test,
+    MAE = mae,
+    RMSE = rmse
+  )%>%
   kable(
     digits = 2,
-    caption = "LOGO CV Results by District"
+    caption = "LOGO CV Results by District",
+    align = "c"  
   ) %>%
   kable_styling(bootstrap_options = c("striped", "hover"))
 
@@ -602,7 +614,7 @@ fishnet <- fishnet %>%
 
 ```
 
-## KDE baseline Comparison
+## 7.1 KDE baseline Comparison
 
 ```{r}
 
@@ -667,19 +679,22 @@ p1 <- ggplot() +
   geom_sf(data = fishnet, aes(fill = countBurglaries), color = NA) +
   scale_fill_viridis_c(name = "Count", option = "plasma", limits = c(0, 15)) +
   labs(title = "Actual Burglaries") +
-  theme_crime()
+  theme_crime()+
+  theme_void()
 
 p2 <- ggplot() +
   geom_sf(data = fishnet, aes(fill = prediction_nb), color = NA) +
   scale_fill_viridis_c(name = "Predicted", option = "plasma", limits = c(0, 15)) +
   labs(title = "Model Predictions (Neg. Binomial)") +
-  theme_crime()
+  theme_crime()+
+  theme_void()
 
 p3 <- ggplot() +
   geom_sf(data = fishnet, aes(fill = prediction_kde), color = NA) +
   scale_fill_viridis_c(name = "Predicted", option = "plasma", limits = c(0, 15)) +
   labs(title = "KDE Baseline Predictions") +
-  theme_crime()
+  theme_crime()+
+  theme_void()
 
 p1 + p2 + p3 +
   plot_annotation(
@@ -697,7 +712,7 @@ The Negative Binomial model captures the broad structure of these patterns. Howe
 
 The KDE baseline produces a more concentrated hotspot pattern, placing high predicted values in areas where burglaries are spatially clustered, regardless of local explanatory variables. While this method lacks covariate information, it aligns closely with the observed burglary distribution due to the strong spatial clustering present in the data.
 
-## Error Analysis
+## 7.2 Error Analysis
 
 ```{r}
 # Calculate performance metrics
@@ -748,13 +763,15 @@ p1 <- ggplot() +
     limits = c(-10, 10)
   ) +
   labs(title = "Model Errors (Actual - Predicted)") +
-  theme_crime()
+  theme_crime()+
+  theme_void()
 
 p2 <- ggplot() +
   geom_sf(data = fishnet, aes(fill = abs_error_nb), color = NA) +
   scale_fill_viridis_c(name = "Abs. Error", option = "magma") +
   labs(title = "Absolute Model Errors") +
-  theme_crime()
+  theme_crime()+
+  theme_void()
 
 p1 + p2
 ```
