@@ -38,6 +38,8 @@ website:
             text: "Midterm: Philadelphia Housing Model (Appendix)"
           - href: assignments/midterm/Yu_Sihan_Presentation.qmd
             text: "Midterm presentation: Philadelphia Housing Model"
+          - href: assignments/assignments4/assignment4.qmd
+            text: "Assignment 4: Spatial Predictive Analysis"
 
            
 

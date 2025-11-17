@@ -49,6 +49,8 @@ library(kableExtra)     # Table formatting
 library(classInt)       # Classification intervals
 library(here)
 library(broom)
+library(glue)
+
 
 # Spatstat split into sub-packages
 library(spatstat.geom)    # Spatial geometries
@@ -429,14 +431,23 @@ tidy(model_poisson) %>%
 dispersion <- sum(residuals(model_poisson, type = "pearson")^2) / 
               model_poisson$df.residual
 
-cat("Dispersion parameter:", round(dispersion, 2), "\n")
-cat("Rule of thumb: >1.5 suggests overdispersion\n")
 
-if (dispersion > 1.5) {
-  cat("⚠ Overdispersion detected! Consider Negative Binomial model.\n")
+conclusion <- if (dispersion > 1.5) {
+  "⚠ Overdispersion detected — the Negative Binomial model is more appropriate."
 } else {
-  cat("✓ Dispersion looks okay for Poisson model.\n")
+  "✓ Dispersion looks acceptable — the Poisson model is reasonable."
 }
+
+glue("
+Dispersion Check
+----------------
+Dispersion parameter: {round(dispersion, 2)}
+Rule of thumb: > 1.5 suggests overdispersion
+
+Conclusion:
+{conclusion}
+")
+
 ```
 
 ## Negative Binomial Regression
@@ -460,10 +471,24 @@ tidy(model_nb) %>%
 
 ```{r}
 # Compare AIC (lower is better)
-cat("AIC Comparison\n")
-cat("--------------------------------\n")
-cat(sprintf("Poisson Model:          %.1f\n", AIC(model_poisson)))
-cat(sprintf("Negative Binomial:      %.1f\n", AIC(model_nb)))
+# Create AIC comparison dataframe
+aic_table <- data.frame(
+  Model = c("Poisson", "Negative Binomial"),
+  AIC   = c(AIC(model_poisson), AIC(model_nb))
+)
+
+# Display with kable
+knitr::kable(
+  aic_table,
+  caption = "AIC Comparison of Count Models",
+  digits = 1,
+  align = "c"
+) %>%
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped", "hover"),
+    full_width = FALSE
+  )
+
 
 ```
 
@@ -480,7 +505,6 @@ After comparing both models, the Negative Binomial model is selected because it 
 districts <- unique(fishnet_model$District)
 cv_results <- tibble()
 
-cat("Running LOGO Cross-Validation...\n")
 
 for (i in seq_along(districts)) {
   
@@ -521,16 +545,6 @@ for (i in seq_along(districts)) {
   
  
 }
-
-cv_results %>%
-  arrange(desc(mae)) %>%
-  knitr::kable(
-    digits = 2,
-    caption = "LOGO Cross-Validation Results by District",
-    col.names = c("Fold", "District", "N Test", "MAE", "RMSE"),
-    align = "c"
-  ) %>%
-  kable_styling(bootstrap_options = c("striped", "hover"))
 
 
 ```
