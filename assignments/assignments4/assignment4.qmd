@@ -160,7 +160,9 @@ p1 + p2 +
 
 ```
 
-**Interpretation:** The point map on the left shows that pothole reports in 2017 are widespread across Chicago, with particularly dense coverage in most urbanized areas. Some low-report zones appear in the southern part of the city. The kernel density map on the right highlights these patterns more clearly: the northeast and northwest areas exhibit the highest concentrations, with additional hotspots in the southwest and southeast. In contrast, the central and western sections show relatively lower report intensity. Overall, pothole reports display strong spatial heterogeneity across the city.
+**Interpretation:**
+
+The point map on the left shows that pothole reports in 2017 are widespread across Chicago, with particularly dense coverage in most urbanized areas. Some low-report zones appear in the southern part of the city. The kernel density map on the right highlights these patterns more clearly: the northeast and northwest areas exhibit the highest concentrations, with additional hotspots in the southwest and southeast. In contrast, the central and western sections show relatively lower report intensity. Overall, pothole reports display strong spatial heterogeneity across the city.
 
 # 3. Fishnet Grid
 
@@ -230,7 +232,9 @@ ggplot() +
   theme_void()
 ```
 
-**Interpretation:** The fishnet map shows that pothole reports are not evenly distributed across Chicago. Higher counts appear in the northern and central parts of the city, while the southern area generally shows lower reporting levels. Localized hotspots also emerge along major road corridors. This suggests that road quality issues vary across neighborhoods, and pothole activity may serve as a proxy for broader spatial differences in infrastructure conditions.
+**Interpretation:**
+
+The fishnet map shows that pothole reports are not evenly distributed across Chicago. Higher counts appear in the northern and central parts of the city, while the southern area generally shows lower reporting levels. Localized hotspots also emerge along major road corridors. This suggests that road quality issues vary across neighborhoods, and pothole activity may serve as a proxy for broader spatial differences in infrastructure conditions.
 
 # 4. Spatial Features
 
@@ -271,11 +275,13 @@ kable(
   summ_df,
   caption = "Summary of Mean Distance to 3 Nearest Pot Holes (meters)"
 ) %>%
-  kable_styling(bootstrap_options = c("striped", "hover"))
+  kable_styling(bootstrap_options = c("striped", "hover"),  full_width = FALSE)
 
 ```
 
-**Interpretation:** The KNN summary indicates strong spatial variation: some cells are only a few meters from potholes, while others are over 1 km away. The median distance of about 87 m suggests that pothole activity is dense and widely distributed across the city.
+**Interpretation:**
+
+The KNN summary indicates strong spatial variation: some cells are only a few meters from potholes, while others are over 1 km away. The median distance of about 87 m suggests that pothole activity is dense and widely distributed across the city.
 
 ## 4.2 Local Moran’s I
 
@@ -379,11 +385,11 @@ if (nrow(hotspots) > 0) {
 
 Local Moran’s I results are interpreted as follows:
 
--    **High–High** areas represent clusters of high burglary counts (hot spots).
+-   **High–High** areas represent clusters of high burglary counts (hot spots).
 
--    **Low–Low** areas represent clusters of consistently low values (cold spots).
+-   **Low–Low** areas represent clusters of consistently low values (cold spots).
 
--    **High–Low** and **Low–High** areas indicate spatial outliers.
+-   **High–Low** and **Low–High** areas indicate spatial outliers.
 
 The LISA results show clear clusters of pothole activity across Chicago. High–High clusters (hotspots) appear mainly in the northern and central neighborhoods, indicating concentrated infrastructure issues. In contrast, the southern part of the city shows several Low–Low clusters, reflecting consistently low levels of reported potholes. The mix of High–Low and Low–High outliers suggests localized transitions between well-maintained and more deteriorated areas. Overall, the spatial pattern confirms that pothole activity is not random but forms distinct neighborhood clusters.
 
@@ -592,7 +598,9 @@ knitr::kable(
 
 ```
 
-**Interpretation:** The LOGO results indicate consistent model performance across most police districts, with MAE values largely concentrated around 2–3. This pattern suggests that the model captures broad spatial variation in burglary risk and performs relatively stably across the city’s neighbourhoods. A small number of districts, such as District 3, show noticeably higher errors, indicating localized conditions not fully captured by the predictors. Overall, the model generalizes well spatially, and the mean MAE of 2.87 and mean RMSE of 3.79 reinforce that performance is steady at the citywide scale, even though certain areas remain more difficult to predict.
+**Interpretation:**
+
+The LOGO results indicate consistent model performance across most police districts, with MAE values largely concentrated around 2–3. This pattern suggests that the model captures broad spatial variation in burglary risk and performs relatively stably across the city’s neighbourhoods. A small number of districts, such as District 3, show noticeably higher errors, indicating localized conditions not fully captured by the predictors. Overall, the model generalizes well spatially, and the mean MAE of 2.87 and mean RMSE of 3.79 reinforce that performance is steady at the citywide scale, even though certain areas remain more difficult to predict.
 
 # 7. Model Evaluation
 
