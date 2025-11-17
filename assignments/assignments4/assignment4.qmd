@@ -160,7 +160,7 @@ p1 + p2 +
 
 ```
 
-**Interpretation:**
+**Interpretation:**  
 
 The point map on the left shows that pothole reports in 2017 are widespread across Chicago, with particularly dense coverage in most urbanized areas. Some low-report zones appear in the southern part of the city. The kernel density map on the right highlights these patterns more clearly: the northeast and northwest areas exhibit the highest concentrations, with additional hotspots in the southwest and southeast. In contrast, the central and western sections show relatively lower report intensity. Overall, pothole reports display strong spatial heterogeneity across the city.
 
@@ -232,7 +232,7 @@ ggplot() +
   theme_void()
 ```
 
-**Interpretation:**
+**Interpretation:**  
 
 The fishnet map shows that pothole reports are not evenly distributed across Chicago. Higher counts appear in the northern and central parts of the city, while the southern area generally shows lower reporting levels. Localized hotspots also emerge along major road corridors. This suggests that road quality issues vary across neighborhoods, and pothole activity may serve as a proxy for broader spatial differences in infrastructure conditions.
 
@@ -279,7 +279,7 @@ kable(
 
 ```
 
-**Interpretation:**
+**Interpretation:** 
 
 The KNN summary indicates strong spatial variation: some cells are only a few meters from potholes, while others are over 1 km away. The median distance of about 87 m suggests that pothole activity is dense and widely distributed across the city.
 
@@ -381,7 +381,7 @@ if (nrow(hotspots) > 0) {
 }
 ```
 
-**Interpretation:**
+**Interpretation:**  
 
 Local Moran’s I results are interpreted as follows:
 
@@ -502,7 +502,9 @@ knitr::kable(
 
 ```
 
-**Interpretation:** The Poisson regression shows strong overdispersion, which leads to a much higher AIC and weaker overall fit. The Negative Binomial model handles this more effectively and provides a substantially better model performance. In the Negative Binomial results, the k-nearest-neighbor pothole feature is highly significant and shows a negative relationship with burglary counts, indicating that areas closer to recent pothole activity tend to experience elevated burglary risk. In comparison, the total number of potholes and the distance to hotspots are not statistically significant once local proximity effects are included. These results suggest that spatial patterns in infrastructure conditions, especially the immediate surroundings captured by the KNN measure, help explain variation in burglary activity. The Negative Binomial model is therefore the more appropriate choice for this analysis.
+**Interpretation:** 
+
+The Poisson regression shows strong overdispersion, which leads to a much higher AIC and weaker overall fit. The Negative Binomial model handles this more effectively and provides a substantially better model performance. In the Negative Binomial results, the k-nearest-neighbor pothole feature is highly significant and shows a negative relationship with burglary counts, indicating that areas closer to recent pothole activity tend to experience elevated burglary risk. In comparison, the total number of potholes and the distance to hotspots are not statistically significant once local proximity effects are included. These results suggest that spatial patterns in infrastructure conditions, especially the immediate surroundings captured by the KNN measure, help explain variation in burglary activity. The Negative Binomial model is therefore the more appropriate choice for this analysis.
 
 # 6. Spatial Cross-Validation
 
