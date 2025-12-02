@@ -880,11 +880,6 @@ model6 <- lm(
 test_fe$pred2 <- predict(model2_fe, newdata = test_fe)
 test_fe$pred6 <- predict(model6,    newdata = test_fe)
 
-# Check how many NAs (debug 用，可以看完删掉)
-sum(is.na(test_fe$pred2))
-sum(is.na(test_fe$pred6))
-sum(is.na(test_fe$Trip_Count))
-
 # Compute MAE with na.rm = TRUE
 mae2 <- mean(abs(test_fe$Trip_Count - test_fe$pred2), na.rm = TRUE)
 mae6 <- mean(abs(test_fe$Trip_Count - test_fe$pred6), na.rm = TRUE)
