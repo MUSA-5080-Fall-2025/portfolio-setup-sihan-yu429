@@ -35,12 +35,12 @@ website:
           - href: assignments/assignments2/assignment2_template.qmd
             text: "Assignment 2: Spatial Analysis and Visualization"
           - href: assignments/midterm/Yu_Sihan_Appendix.qmd
-            text: "Midterm: Philadelphia Housing Model (Appendix)"
+            text: "Midterm: Philadelphia Housing Model (Appendqix)"
           - href: assignments/midterm/Yu_Sihan_Presentation.qmd
             text: "Midterm presentation: Philadelphia Housing Model"
           - href: assignments/assignments4/assignment4.qmd
             text: "Assignment 4: Spatial Predictive Analysis"
-          - href: assignments/assignments5/assignment5_1.qmd
+          - href: assignments/assignments5/assignments5_1.qmd
             text: "Assignment 5: Space-Time Prediction of Bike Share Demand"
 
            

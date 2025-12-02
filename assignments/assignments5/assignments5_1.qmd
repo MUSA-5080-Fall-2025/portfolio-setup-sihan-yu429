@@ -103,11 +103,6 @@ palette5 <- c("#eff3ff", "#bdd7e7", "#6baed6", "#3182bd", "#08519c")
 
 ### Set Census API key
 
-```{r census_key, eval=FALSE}
-
-census_api_key("e173851c633e89c20243632174db68f63bac8856", overwrite = TRUE, install = TRUE)
-
-```
 
 ```{r census_key_hidden, include=FALSE}
 # Hidden key for rendering
@@ -178,7 +173,7 @@ The chart illustrates the Indego bike share system's daily trip volume during Q4
 
 ### Load Philadelphia Census Data
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 # Get Philadelphia census tracts
 philly_census <- get_acs(
   geography = "tract",
@@ -214,7 +209,7 @@ philly_census <- get_acs(
 # glimpse(philly_census)
 ```
 
-### join data to station
+### Join data to station
 
 ```{r}
 # Create sf object for stations
@@ -281,7 +276,7 @@ indego_census <- indego %>%
 
 This section focuses on data processing and panel construction. Historical weather data is fetched for the quarter, aggregate trips into a "station-hour" panel format, and create temporal lag features to capture demand persistence. Finally, split the data into training and testing sets based for future test.
 
-### update weather data
+### Update weather data
 
 ```{r}
 weather_data <- riem_measures(
@@ -312,7 +307,7 @@ weather_complete <- weather_processed %>%
 #summary(weather_complete %>% select(Temperature, Precipitation, Wind_Speed))
 ```
 
-### aggregate to station-hour level
+### Aggregate to station-hour level
 
 ```{r}
 # Count trips by station-hour
@@ -376,8 +371,7 @@ study_panel <- study_panel %>%
 study_panel <- study_panel %>%
   left_join(weather_complete, by = "interval60")
 
-# Check for missing values
-summary(study_panel %>% select(Trip_Count, Temperature, Precipitation))
+
 ```
 
 ### Temporal Lag
@@ -556,7 +550,7 @@ kable(mae_results,
   kable_styling(bootstrap_options = c("striped", "hover"))
 ```
 
-Analysis of the Q4 2024 data reveals that Model 2 (Temporal Lags) is the superior model, achieving the lowest Mean Absolute Error (MAE) of 0.40. After introducing lagged variables significantly improved accuracy, the MAE lowered from 0.52 (baseline Model 1) to 0.40, confirming that recent demand history is a strong predictor of future trips. Interestingly, increasing model complexity by adding demographics (Model 3) and station fixed effects (Model 4) actually **worsened** performance, causing the MAE to spike to 0.63 and 0.65 respectively. This suggests that static features like station fixed effects led to overfitting on the higher-demand autumn training data, which failed to generalize to the distinct, lower-demand winter patterns observed in the test set.
+Analysis of the Q4 2024 data reveals that Model 2 (Temporal Lags) is the superior model, achieving the lowest Mean Absolute Error (MAE) of 0.40. After introducing lagged variables significantly improved accuracy, the MAE lowered from 0.52 (baseline Model 1) to 0.40, confirming that recent demand history is a strong predictor of future trips. Interestingly, increasing model complexity by adding demographics (Model 3) and station fixed effects (Model 4) actually worsened performance, causing the MAE to spike to 0.63 and 0.65 respectively. This suggests that static features like station fixed effects led to overfitting on the higher-demand autumn training data, which failed to generalize to the distinct, lower-demand winter patterns observed in the test set.
 
 ### 1.4 MAE comparison to Q1 2025
 
@@ -735,7 +729,8 @@ ggplot(temporal_errors, aes(x = time_of_day, y = MAE, fill = day_type)) +
 
 **Interpretation**\
 The temporal analysis highlights distinct challenges during peak times. The bar chart clearly indicates that the model struggles the most during the Weekday PM Rush. The Mean Absolute Error (MAE) reaches almost 0.7 trips at this time, which is much higher than during the AM Rush or midday. This suggests that afternoon travel behavior is simply more unpredictable. People may run errands or attend social events after work, which is less regular than the fixed morning commute. On the other hand, the model performs best overnight when demand is consistently low.\
-\## 2.3 Demographic patterns
+
+## 2.3 Demographic patterns
 
 ```{r}
 # Join demographic data to station errors
