@@ -1,0 +1,17 @@
+{
+  "hash": "4dfd08add74589928f1921e7ca8656f7",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"assignments5\"\noutput: html_document\n---\n\n",
+    "supporting": [
+      "assignments5_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

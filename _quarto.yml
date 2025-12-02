@@ -40,6 +40,8 @@ website:
             text: "Midterm presentation: Philadelphia Housing Model"
           - href: assignments/assignments4/assignment4.qmd
             text: "Assignment 4: Spatial Predictive Analysis"
+          - href: assignments/assignments5/assignment5_1.qmd
+            text: "Assignment 5: Space-Time Prediction of Bike Share Demand"
 
            
 
