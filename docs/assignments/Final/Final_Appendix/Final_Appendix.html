@@ -1,0 +1,1950 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Sihan Yu">
+<meta name="author" content="Isabelle Li">
+<meta name="author" content="Jingqi Lu">
+<meta name="author" content="Ming Cao">
+
+<title>Fire Alarm Prediction-Technical Appendix – Sihan Yu- MUSA 5080 Portfolio</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-e31584831b205ffbb2d98406f31c2a5b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../../index.html" class="navbar-brand navbar-brand-logo">
+    </a>
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Sihan Yu- MUSA 5080 Portfolio</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-weekly-notes" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Weekly Notes</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-weekly-notes">    
+        <li>
+    <a class="dropdown-item" href="../../../weekly-notes/week-01-notes.html">
+ <span class="dropdown-text">week 1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../weekly-notes/week-02-notes.html">
+ <span class="dropdown-text">week 2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../weekly-notes/week-03-notes.html">
+ <span class="dropdown-text">week 3</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../weekly-notes/week-04-notes.html">
+ <span class="dropdown-text">week 4</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../weekly-notes/week-05-notes.html">
+ <span class="dropdown-text">week 5</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../weekly-notes/week-06-notes.html">
+ <span class="dropdown-text">week 6</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../weekly-notes/week-07-notes.html">
+ <span class="dropdown-text">week 7</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../weekly-notes/week-09-notes.html">
+ <span class="dropdown-text">week 9</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../weekly-notes/week-10-notes.html">
+ <span class="dropdown-text">week 10</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../weekly-notes/week-11-notes.html">
+ <span class="dropdown-text">week 11</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../weekly-notes/week-12-notes.html">
+ <span class="dropdown-text">week 12</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-labs" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Labs</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-labs">    
+        <li>
+    <a class="dropdown-item" href="../../../labs/lab0/scripts/lab0_template.html">
+ <span class="dropdown-text">Lab 0: dplyr Basics</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-assignments" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Assignments</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-assignments">    
+        <li>
+    <a class="dropdown-item" href="../../../assignments/assignments1/scripts/assignment1_template.html">
+ <span class="dropdown-text">Assignment 1: Census Data Exploration</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../assignments/assignments2/assignment2_template.html">
+ <span class="dropdown-text">Assignment 2: Spatial Analysis and Visualization</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../assignments/midterm/Yu_Sihan_Appendix.html">
+ <span class="dropdown-text">Midterm: Philadelphia Housing Model (Appendix)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../assignments/midterm/Yu_Sihan_Presentation.html">
+ <span class="dropdown-text">Midterm presentation: Philadelphia Housing Model</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../assignments/assignments4/assignment4.html">
+ <span class="dropdown-text">Assignment 4: Spatial Predictive Analysis</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../assignments/assignments5/assignments5.html">
+ <span class="dropdown-text">Assignment 5: Space-Time Prediction of Bike Share Demand</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../assignments/Final/Final_Appendix/Final_Appendix.html">
+ <span class="dropdown-text">Final: Fire Alarm Prediction (Appendix)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../assignments/Final/Final_Presentation/presentation/Final_Presentation.html">
+ <span class="dropdown-text">Final presentation: Fire Alarm Prediction</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a></li>
+  <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation"><span class="header-section-number">2</span> Data Preparation</a>
+  <ul class="collapse">
+  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup"><span class="header-section-number">2.1</span> Setup</a></li>
+  <li><a href="#data-import-cleaning" id="toc-data-import-cleaning" class="nav-link" data-scroll-target="#data-import-cleaning"><span class="header-section-number">2.2</span> Data Import &amp; Cleaning</a>
+  <ul class="collapse">
+  <li><a href="#fire-incident-data" id="toc-fire-incident-data" class="nav-link" data-scroll-target="#fire-incident-data"><span class="header-section-number">2.2.1</span> Fire Incident Data</a></li>
+  <li><a href="#census-data" id="toc-census-data" class="nav-link" data-scroll-target="#census-data"><span class="header-section-number">2.2.2</span> Census Data</a></li>
+  <li><a href="#fire-alarm-data" id="toc-fire-alarm-data" class="nav-link" data-scroll-target="#fire-alarm-data"><span class="header-section-number">2.2.3</span> Fire Alarm Data</a></li>
+  <li><a href="#weather-data" id="toc-weather-data" class="nav-link" data-scroll-target="#weather-data"><span class="header-section-number">2.2.4</span> Weather Data</a></li>
+  <li><a href="#work-days-and-weekends" id="toc-work-days-and-weekends" class="nav-link" data-scroll-target="#work-days-and-weekends"><span class="header-section-number">2.2.5</span> Work Days and Weekends</a></li>
+  <li><a href="#location-of-fire-stations" id="toc-location-of-fire-stations" class="nav-link" data-scroll-target="#location-of-fire-stations"><span class="header-section-number">2.2.6</span> Location of Fire Stations</a></li>
+  </ul></li>
+  <li><a href="#data-merge" id="toc-data-merge" class="nav-link" data-scroll-target="#data-merge"><span class="header-section-number">2.3</span> Data Merge</a>
+  <ul class="collapse">
+  <li><a href="#join-daily-weather-to-fire-incidents" id="toc-join-daily-weather-to-fire-incidents" class="nav-link" data-scroll-target="#join-daily-weather-to-fire-incidents"><span class="header-section-number">2.3.1</span> Join Daily Weather to Fire Incidents</a></li>
+  <li><a href="#join-the-fire-station-buffer" id="toc-join-the-fire-station-buffer" class="nav-link" data-scroll-target="#join-the-fire-station-buffer"><span class="header-section-number">2.3.2</span> Join the Fire Station Buffer</a></li>
+  <li><a href="#combine-with-census-tract-data" id="toc-combine-with-census-tract-data" class="nav-link" data-scroll-target="#combine-with-census-tract-data"><span class="header-section-number">2.3.3</span> <strong>Combine with Census Tract Data</strong></a></li>
+  <li><a href="#create-quarter-column" id="toc-create-quarter-column" class="nav-link" data-scroll-target="#create-quarter-column"><span class="header-section-number">2.3.4</span> Create Quarter Column</a></li>
+  <li><a href="#distance-to-city-hall" id="toc-distance-to-city-hall" class="nav-link" data-scroll-target="#distance-to-city-hall"><span class="header-section-number">2.3.5</span> Distance to City Hall</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#exploratory-data-analysis" id="toc-exploratory-data-analysis" class="nav-link" data-scroll-target="#exploratory-data-analysis"><span class="header-section-number">3</span> Exploratory Data Analysis</a>
+  <ul class="collapse">
+  <li><a href="#map-false-alarm-rate-by-census-tract" id="toc-map-false-alarm-rate-by-census-tract" class="nav-link" data-scroll-target="#map-false-alarm-rate-by-census-tract"><span class="header-section-number">3.1</span> Map: False Alarm Rate by Census Tract</a></li>
+  <li><a href="#pie-chart-true-fire-vs-false-alarm" id="toc-pie-chart-true-fire-vs-false-alarm" class="nav-link" data-scroll-target="#pie-chart-true-fire-vs-false-alarm"><span class="header-section-number">3.2</span> Pie Chart: True Fire vs False Alarm</a></li>
+  <li><a href="#line-chart-false-alarm-rate-by-quarter" id="toc-line-chart-false-alarm-rate-by-quarter" class="nav-link" data-scroll-target="#line-chart-false-alarm-rate-by-quarter"><span class="header-section-number">3.3</span> Line Chart: False Alarm Rate by Quarter</a></li>
+  <li><a href="#map-expired-alarm-certificates-share-by-census-tract" id="toc-map-expired-alarm-certificates-share-by-census-tract" class="nav-link" data-scroll-target="#map-expired-alarm-certificates-share-by-census-tract"><span class="header-section-number">3.4</span> Map: Expired Alarm Certificates Share by Census Tract</a></li>
+  </ul></li>
+  <li><a href="#modeling" id="toc-modeling" class="nav-link" data-scroll-target="#modeling"><span class="header-section-number">4</span> Modeling</a>
+  <ul class="collapse">
+  <li><a href="#model1-weather-data" id="toc-model1-weather-data" class="nav-link" data-scroll-target="#model1-weather-data"><span class="header-section-number">4.1</span> Model1: Weather Data</a></li>
+  <li><a href="#model-2-socioeconomic" id="toc-model-2-socioeconomic" class="nav-link" data-scroll-target="#model-2-socioeconomic"><span class="header-section-number">4.2</span> Model 2: Socioeconomic</a></li>
+  <li><a href="#model-3-full-model" id="toc-model-3-full-model" class="nav-link" data-scroll-target="#model-3-full-model"><span class="header-section-number">4.3</span> Model 3: Full Model</a></li>
+  <li><a href="#model-evaluation" id="toc-model-evaluation" class="nav-link" data-scroll-target="#model-evaluation"><span class="header-section-number">4.4</span> Model Evaluation</a>
+  <ul class="collapse">
+  <li><a href="#auc-comparison" id="toc-auc-comparison" class="nav-link" data-scroll-target="#auc-comparison"><span class="header-section-number">4.4.1</span> AUC Comparison</a></li>
+  <li><a href="#roc-curve" id="toc-roc-curve" class="nav-link" data-scroll-target="#roc-curve"><span class="header-section-number">4.4.2</span> ROC Curve</a></li>
+  <li><a href="#k-fold-cross-validation" id="toc-k-fold-cross-validation" class="nav-link" data-scroll-target="#k-fold-cross-validation"><span class="header-section-number">4.4.3</span> K-fold Cross Validation</a></li>
+  <li><a href="#odds-ratios-for-model-3" id="toc-odds-ratios-for-model-3" class="nav-link" data-scroll-target="#odds-ratios-for-model-3"><span class="header-section-number">4.4.4</span> Odds Ratios for Model 3</a></li>
+  </ul></li>
+  <li><a href="#threshold-selection" id="toc-threshold-selection" class="nav-link" data-scroll-target="#threshold-selection"><span class="header-section-number">4.5</span> Threshold Selection</a></li>
+  </ul></li>
+  <li><a href="#recommendations" id="toc-recommendations" class="nav-link" data-scroll-target="#recommendations"><span class="header-section-number">5</span> Recommendations</a></li>
+  <li><a href="#limitationsnext-steps" id="toc-limitationsnext-steps" class="nav-link" data-scroll-target="#limitationsnext-steps"><span class="header-section-number">6</span> Limitations&amp;Next Steps</a>
+  <ul class="collapse">
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations"><span class="header-section-number">6.1</span> <strong>Limitations</strong></a></li>
+  <li><a href="#improvement-possibilities" id="toc-improvement-possibilities" class="nav-link" data-scroll-target="#improvement-possibilities"><span class="header-section-number">6.2</span> <strong>Improvement Possibilities</strong></a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Fire Alarm Prediction-Technical Appendix</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Authors</div>
+    <div class="quarto-title-meta-contents">
+             <p>Sihan Yu </p>
+             <p>Isabelle Li </p>
+             <p>Jingqi Lu </p>
+             <p>Ming Cao </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Introduction</h1>
+<p>In the NFIRS (National Fire Incident Reporting System) reporting system, false alarms (codes 700–799) include system malfunctions, unintentional activations, detector errors, and malicious alarms. Although no actual fire is present, each false alarm still triggers a full fire department response.</p>
+<p>In OpenDataPhilly dataset, 77% of all fire-related incidents are false alarms. This extremely high share creates substantial operational burden: every response requires multiple firefighters, apparatus deployment, fuel and equipment usage, and temporarily removes units from availability for real emergencies.</p>
+<p>Reducing false alarms can save time, reduce firefighter workload, and improve public safety. This analysis produces a predicted probability of false alarm for each incident.<br>
+By choosing an appropriate threshold, the city can identify high-risk cases and apply targeted interventions to reduce unnecessary responses and operational costs.</p>
+</section>
+<section id="data-preparation" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Data Preparation</h1>
+<section id="setup" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="setup"><span class="header-section-number">2.1</span> Setup</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Core packages</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)   <span class="co"># dplyr, ggplot2, readr, tidyr, stringr, etc.</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tigris)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidycensus)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Modeling / utilities</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(riem)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pROC)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co"># tigris options</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">tigris_use_cache =</span> <span class="cn">TRUE</span>, <span class="at">tigris_class =</span> <span class="st">"sf"</span>, <span class="at">tigris_progress =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co"># set a global theme</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="data-import-cleaning" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="data-import-cleaning"><span class="header-section-number">2.2</span> Data Import &amp; Cleaning</h2>
+<section id="fire-incident-data" class="level3" data-number="2.2.1">
+<h3 data-number="2.2.1" class="anchored" data-anchor-id="fire-incident-data"><span class="header-section-number">2.2.1</span> Fire Incident Data</h3>
+<p>We recoded incident types following NFIRS conventions. All <strong>7xx</strong> incidents represent <em>False Alarm &amp; False Call</em> responses (e.g., alarm system malfunctions, detector errors, accidental activations, and malicious alarms) and were coded as <strong>1</strong>. Incidents in the <strong>1xx</strong> and <strong>2xx</strong> series correspond to actual fires and overpressure/explosion events that required genuine emergency response; these were coded as <strong>0</strong>. This classification provides a clean separation between false alarms and all non–false alarm incidents for modeling purposes.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>fire <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/stat360/stat360_fire_incidents.shp"</span>, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(<span class="fu">table</span>(fire<span class="sc">$</span>incident_2), <span class="at">decreasing =</span> <span class="cn">TRUE</span>)[<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>]</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>fire <span class="ot">&lt;-</span> fire <span class="sc">|&gt;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>sf<span class="sc">::</span><span class="fu">st_is_empty</span>(geometry)) <span class="sc">|&gt;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">incident_code =</span> <span class="fu">as.integer</span>(<span class="fu">str_extract</span>(incident_1, <span class="st">"^</span><span class="sc">\\</span><span class="st">d+"</span>))</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(incident_code <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1</span>L, <span class="dv">7</span>L)) <span class="sc">|&gt;</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">inc_new =</span> <span class="fu">if_else</span>(incident_code <span class="sc">==</span> <span class="dv">7</span>L, <span class="dv">1</span>L, <span class="dv">0</span>L)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>fire <span class="sc">|&gt;</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">|&gt;</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(inc_new) <span class="sc">|&gt;</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">p =</span> n <span class="sc">/</span> <span class="fu">sum</span>(n)) <span class="sc">|&gt;</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="census-data" class="level3" data-number="2.2.2">
+<h3 data-number="2.2.2" class="anchored" data-anchor-id="census-data"><span class="header-section-number">2.2.2</span> Census Data</h3>
+<p>We retrieved tract-level demographic and socioeconomic indicators from the 2023 American Community Survey (ACS) to incorporate neighborhood characteristics that may influence false-alarm patterns. Prior research shows that alarm activity often correlates with community demographics, housing conditions, and economic stressors. Accordingly, we included measures of population composition, educational attainment, income, and labor force status to capture these broader social determinants.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>philly_census <span class="ot">&lt;-</span> <span class="fu">get_acs</span>(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="at">geography =</span> <span class="st">"tract"</span>,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="at">variables =</span> <span class="fu">c</span>(</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="at">total_pop =</span> <span class="st">"B01003_001"</span>,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="at">black =</span> <span class="st">"B02001_003"</span>,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="at">ba_degree =</span> <span class="st">"B15003_022"</span>,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="at">total_edu =</span> <span class="st">"B15003_001"</span>,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="at">median_income =</span> <span class="st">"B19013_001"</span>,</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="at">labor_force =</span> <span class="st">"B23025_003"</span>,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="at">unemployed =</span> <span class="st">"B23025_005"</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>),</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="at">year =</span> <span class="dv">2023</span>,</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="at">state =</span> <span class="st">"PA"</span>,</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="at">county =</span> <span class="st">"Philadelphia"</span>,</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="at">geometry =</span> <span class="cn">TRUE</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">select</span>(GEOID, variable, estimate, geometry) <span class="sc">|&gt;</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>tidyr<span class="sc">::</span><span class="fu">pivot_wider</span>(<span class="at">names_from =</span> variable, <span class="at">values_from =</span> estimate) <span class="sc">|&gt;</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="at">ba_rate =</span> <span class="dv">100</span> <span class="sc">*</span> ba_degree <span class="sc">/</span> total_edu,</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="at">unemployment_rate =</span> <span class="dv">100</span> <span class="sc">*</span> unemployed <span class="sc">/</span> labor_force,</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="at">black_share =</span> <span class="dv">100</span> <span class="sc">*</span> black <span class="sc">/</span> total_pop</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="fu">st_transform</span>(<span class="fu">st_crs</span>(fire))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="fire-alarm-data" class="level3" data-number="2.2.3">
+<h3 data-number="2.2.3" class="anchored" data-anchor-id="fire-alarm-data"><span class="header-section-number">2.2.3</span> Fire Alarm Data</h3>
+<p>Building certification information comes from the City of Philadelphia’s <strong>Licenses and Inspections (L&amp;I) Building Certifications</strong> dataset on OpenDataPhilly. We joined these records to the building footprints to identify each building’s fire-alarm certification status (Active, Expired, or Deficient). Including this information allows the model to account for building-level inspection and maintenance conditions, which are closely related to false-alarm occurrences.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>bldg_foot <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/LI_BUILDING_FOOTPRINTS.shp"</span>, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>cert_sum <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">"data/BUILDING_CERT_SUMMARY.csv"</span>, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>bldg_cert <span class="ot">&lt;-</span> bldg_foot <span class="sc">|&gt;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">bin =</span> <span class="fu">as.character</span>(bin)) <span class="sc">|&gt;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    cert_sum <span class="sc">|&gt;</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">structure_id =</span> <span class="fu">as.character</span>(structure_id)),</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"bin"</span> <span class="ot">=</span> <span class="st">"structure_id"</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>bldg_cert <span class="sc">|&gt;</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">|&gt;</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n_bldg =</span> <span class="fu">n_distinct</span>(bin))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>  n_bldg
+1  26310</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>bldg_cert <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">|&gt;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(fire_alarm_status, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>  fire_alarm_status     n
+1            Active 13241
+2           Expired  7635
+3              &lt;NA&gt;  5098
+4         Deficient   340</code></pre>
+</div>
+</div>
+<p>We spatially joined the building certification records to census tracts to summarize inspection conditions at the neighborhood level. For each tract, we calculated the number of buildings with Active, Expired, or Deficient fire-alarm certifications and derived an <strong>active certification rate</strong>. These tract-level indicators were then merged into the ACS dataset, allowing the model to incorporate variation in building inspection status across neighborhoods.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>bldg_tract <span class="ot">&lt;-</span> bldg_cert <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">st_transform</span>(<span class="fu">st_crs</span>(philly_census)) <span class="sc">|&gt;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">st_join</span>(philly_census[<span class="st">"GEOID"</span>])</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>tract_alarm <span class="ot">&lt;-</span> bldg_tract <span class="sc">|&gt;</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="fu">st_drop_geometry</span>() <span class="sc">|&gt;</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="fu">group_by</span>(GEOID) <span class="sc">|&gt;</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summarise</span>(</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="at">n_bldg =</span> <span class="fu">n</span>(),</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="at">n_active =</span> <span class="fu">sum</span>(fire_alarm_status <span class="sc">==</span> <span class="st">"Active"</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="at">n_expired =</span> <span class="fu">sum</span>(fire_alarm_status <span class="sc">==</span> <span class="st">"Expired"</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="at">n_deficient=</span> <span class="fu">sum</span>(fire_alarm_status <span class="sc">==</span> <span class="st">"Deficient"</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="at">active_rate =</span> n_active <span class="sc">/</span> n_bldg</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>philly_census_alarm <span class="ot">&lt;-</span> philly_census <span class="sc">|&gt;</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="fu">left_join</span>(tract_alarm, <span class="at">by =</span> <span class="st">"GEOID"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="weather-data" class="level3" data-number="2.2.4">
+<h3 data-number="2.2.4" class="anchored" data-anchor-id="weather-data"><span class="header-section-number">2.2.4</span> Weather Data</h3>
+<p>We obtained hourly weather observations from the <strong>PHL airport weather station</strong> using the <code>riem_measures</code> API. Data were downloaded in several date ranges and combined into a single dataset, from which duplicate timestamps were removed. Including weather information allows the model to capture environmental conditions such as temperature, precipitation, and wind speed that may influence alarm activations and false-alarm likelihood.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>get_phl <span class="ot">&lt;-</span> <span class="cf">function</span>(start, end) </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">riem_measures</span>(</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">station     =</span> <span class="st">"PHL"</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">date_start  =</span> start,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">date_end    =</span> end,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">report_type =</span> <span class="fu">c</span>(<span class="st">"routine"</span>, <span class="st">"specials"</span>, <span class="st">"hfmetar"</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>w1 <span class="ot">&lt;-</span> <span class="fu">get_phl</span>(<span class="st">"2024-01-01"</span>, <span class="st">"2024-03-31"</span>)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>w2 <span class="ot">&lt;-</span> <span class="fu">get_phl</span>(<span class="st">"2024-04-01"</span>, <span class="st">"2024-06-30"</span>)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>w3 <span class="ot">&lt;-</span> <span class="fu">get_phl</span>(<span class="st">"2024-07-01"</span>, <span class="st">"2024-09-30"</span>)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>w4 <span class="ot">&lt;-</span> <span class="fu">get_phl</span>(<span class="st">"2024-10-01"</span>, <span class="st">"2024-12-31"</span>)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>w5 <span class="ot">&lt;-</span> <span class="fu">get_phl</span>(<span class="st">"2025-01-01"</span>, <span class="st">"2025-06-30"</span>)</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>w6 <span class="ot">&lt;-</span> <span class="fu">get_phl</span>(<span class="st">"2025-07-01"</span>, <span class="st">"2025-10-06"</span>)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>weather_data <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(w1, w2, w3, w4, w5, w6) <span class="sc">|&gt;</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(valid) <span class="sc">|&gt;</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(valid, <span class="at">.keep_all =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(weather_data<span class="sc">$</span>valid)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "2024-01-01 00:00:00 UTC" "2025-10-05 23:55:00 UTC"</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(weather_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 196666</code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>weather_processed <span class="ot">&lt;-</span> weather_data <span class="sc">%&gt;%</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">interval60    =</span> <span class="fu">floor_date</span>(valid, <span class="at">unit =</span> <span class="st">"hour"</span>),</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">Temperature   =</span> tmpf,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">Precipitation =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(p01i), <span class="dv">0</span>, p01i),</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">Wind_Speed    =</span> sknt</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(interval60, Temperature, Precipitation, Wind_Speed) <span class="sc">%&gt;%</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">distinct</span>()</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>weather_complete <span class="ot">&lt;-</span> weather_processed <span class="sc">%&gt;%</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">complete</span>(</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">interval60 =</span> <span class="fu">seq</span>(<span class="fu">min</span>(interval60), <span class="fu">max</span>(interval60), <span class="at">by =</span> <span class="st">"hour"</span>)</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">fill</span>(Temperature, Precipitation, Wind_Speed, <span class="at">.direction =</span> <span class="st">"down"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(lubridate<span class="sc">::</span><span class="fu">hour</span>(interval60) <span class="sc">==</span> <span class="dv">12</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(interval60) <span class="sc">%&gt;%</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">as.Date</span>(interval60)) <span class="sc">%&gt;%</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(date) <span class="sc">%&gt;%</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">slice</span>(<span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(date, Temperature, Precipitation, Wind_Speed)</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>weather_complete<span class="sc">$</span>Precipitation <span class="ot">&lt;-</span> weather_complete<span class="sc">$</span>Precipitation <span class="sc">+</span> <span class="fl">0.00001</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="work-days-and-weekends" class="level3" data-number="2.2.5">
+<h3 data-number="2.2.5" class="anchored" data-anchor-id="work-days-and-weekends"><span class="header-section-number">2.2.5</span> Work Days and Weekends</h3>
+<p>From the cleaned weather dataset, we generated a day-of-week variable and an <code>is_weekend</code> flag to capture weekly temporal patterns in alarm activity. Weekend versus weekday distinctions are included because building use and human activity differ substantially across the week. On weekends, many commercial and institutional buildings operate at reduced occupancy, while residential buildings experience increased activity. These shifts can influence how alarm systems behave through factors such as maintenance schedules, system testing times, building vacancy, cooking activity, or nuisance triggers.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>weather_daily <span class="ot">&lt;-</span> weather_complete <span class="sc">%&gt;%</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">dow        =</span> lubridate<span class="sc">::</span><span class="fu">wday</span>(date, <span class="at">label =</span> <span class="cn">TRUE</span>, <span class="at">week_start =</span> <span class="dv">1</span>),</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">is_weekend =</span> <span class="fu">as.integer</span>(dow <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Sat"</span>, <span class="st">"Sun"</span>))   <span class="co"># 0 = weekday, 1 = weekend</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>weather_daily <span class="sc">%&gt;%</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">count</span>(is_weekend)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 2
+  is_weekend     n
+       &lt;int&gt; &lt;int&gt;
+1          0   460
+2          1   184</code></pre>
+</div>
+</div>
+</section>
+<section id="location-of-fire-stations" class="level3" data-number="2.2.6">
+<h3 data-number="2.2.6" class="anchored" data-anchor-id="location-of-fire-stations"><span class="header-section-number">2.2.6</span> Location of Fire Stations</h3>
+<p>We incorporated the locations of Philadelphia fire stations by converting the <code>Fire_Dept</code> table into a spatial dataset using station latitude and longitude. A 100-meter buffer was generated around each station to capture buildings located very close to fire infrastructure. Proximity to a fire station may relate to false-alarm activity, for example, areas near stations may include larger commercial buildings with more alarm systems, more frequent maintenance activity, or higher reporting sensitivity.</p>
+</section>
+</section>
+<section id="data-merge" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="data-merge"><span class="header-section-number">2.3</span> Data Merge</h2>
+<p>Multiple contextual variables were merged onto the incident dataset to create a comprehensive analytic file. Weather observations were linked by date, fire station buffers were used to generate a proximity indicator, and incidents were spatially joined to census tracts to attach neighborhood socioeconomic and building-inspection attributes. We also derived temporal structure by assigning each incident to a calendar quarter, and calculated the distance from each incident to Philadelphia City Hall as a simple measure of urban centrality. Together, these additions introduce temporal, spatial, and neighborhood-level variation that may influence false-alarm patterns.</p>
+<section id="join-daily-weather-to-fire-incidents" class="level3" data-number="2.3.1">
+<h3 data-number="2.3.1" class="anchored" data-anchor-id="join-daily-weather-to-fire-incidents"><span class="header-section-number">2.3.1</span> Join Daily Weather to Fire Incidents</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>fire_weather <span class="ot">&lt;-</span> fire <span class="sc">%&gt;%</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">date =</span> <span class="fu">as.Date</span>(alarm_date)  </span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">left_join</span>(</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    weather_daily,</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="st">"date"</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="join-the-fire-station-buffer" class="level3" data-number="2.3.2">
+<h3 data-number="2.3.2" class="anchored" data-anchor-id="join-the-fire-station-buffer"><span class="header-section-number">2.3.2</span> Join the Fire Station Buffer</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>fire_weather_station <span class="ot">&lt;-</span> fire_weather <span class="sc">|&gt;</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="fu">st_crs</span>(firesta_buf))</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>idx <span class="ot">&lt;-</span> <span class="fu">st_intersects</span>(fire_weather_station, firesta_buf)  </span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>fire_weather_station <span class="ot">&lt;-</span> fire_weather_station <span class="sc">|&gt;</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">near_station_200m =</span> <span class="fu">as.integer</span>(<span class="fu">lengths</span>(idx) <span class="sc">&gt;</span> <span class="dv">0</span>) </span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="combine-with-census-tract-data" class="level3" data-number="2.3.3">
+<h3 data-number="2.3.3" class="anchored" data-anchor-id="combine-with-census-tract-data"><span class="header-section-number">2.3.3</span> <strong>Combine with Census Tract Data</strong></h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>philly_census_alarm <span class="ot">&lt;-</span> philly_census_alarm <span class="sc">|&gt;</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">st_transform</span>(<span class="fu">st_crs</span>(fire_weather_station))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>fire_firetract <span class="ot">&lt;-</span> fire_weather_station <span class="sc">|&gt;</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">st_join</span>(</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>philly_census_alarm,</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="at">join =</span> st_within, </span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="at">left =</span> <span class="cn">TRUE</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="create-quarter-column" class="level3" data-number="2.3.4">
+<h3 data-number="2.3.4" class="anchored" data-anchor-id="create-quarter-column"><span class="header-section-number">2.3.4</span> Create Quarter Column</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>fire_firetract <span class="ot">&lt;-</span> fire_firetract <span class="sc">|&gt;</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="at">quarter_num =</span> lubridate<span class="sc">::</span><span class="fu">quarter</span>(date), <span class="co"># 1–4</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="at">quarter =</span> <span class="fu">factor</span>(quarter_num,</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="at">levels =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>,</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Q1"</span>, <span class="st">"Q2"</span>, <span class="st">"Q3"</span>, <span class="st">"Q4"</span>))</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="distance-to-city-hall" class="level3" data-number="2.3.5">
+<h3 data-number="2.3.5" class="anchored" data-anchor-id="distance-to-city-hall"><span class="header-section-number">2.3.5</span> Distance to City Hall</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>downtown <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>name, <span class="sc">~</span>lat,       <span class="sc">~</span>lon,</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Philadelphia City Hall (Downtown)"</span>, <span class="fl">39.952583</span>, <span class="sc">-</span><span class="fl">75.165222</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>(<span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"lon"</span>,<span class="st">"lat"</span>), <span class="at">crs =</span> <span class="dv">4326</span>, <span class="at">remove =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(fire_firetract)</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>fire_firetract <span class="ot">&lt;-</span> fire_firetract <span class="sc">|&gt;</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="fu">st_crs</span>(downtown)) <span class="sc">|&gt;</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">dist_cityhall_m =</span> <span class="fu">as.numeric</span>(</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">st_distance</span>(</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>        geometry,</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>        <span class="fu">st_geometry</span>(downtown)[<span class="fu">rep</span>(<span class="dv">1</span>, n)],</span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">by_element =</span> <span class="cn">TRUE</span></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">dist_cityhall_km =</span> dist_cityhall_m <span class="sc">/</span> <span class="dv">1000</span></span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+</section>
+</section>
+<section id="exploratory-data-analysis" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Exploratory Data Analysis</h1>
+<section id="map-false-alarm-rate-by-census-tract" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="map-false-alarm-rate-by-census-tract"><span class="header-section-number">3.1</span> Map: False Alarm Rate by Census Tract</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>tract_fire_stats <span class="ot">&lt;-</span> fire_firetract <span class="sc">|&gt;</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">st_drop_geometry</span>() <span class="sc">|&gt;</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(GEOID)) <span class="sc">|&gt;</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">group_by</span>(GEOID) <span class="sc">|&gt;</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">summarise</span>(</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="at">n_incidents  =</span> dplyr<span class="sc">::</span><span class="fu">n</span>(),</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="at">n_false_7   =</span> <span class="fu">sum</span>(inc_new <span class="sc">==</span> <span class="dv">1</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="at">false_rate_7 =</span> n_false_7 <span class="sc">/</span> n_incidents</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>philly_census_alarm_fire <span class="ot">&lt;-</span> philly_census_alarm <span class="sc">|&gt;</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">left_join</span>(tract_fire_stats, <span class="at">by =</span> <span class="st">"GEOID"</span>)</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(philly_census_alarm_fire) <span class="sc">+</span></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> false_rate_7), <span class="at">color =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(</span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">option   =</span> <span class="st">"magma"</span>,</span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>,</span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">na.value =</span> <span class="st">"grey90"</span>,</span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels   =</span> scales<span class="sc">::</span><span class="fu">percent_format</span>(<span class="at">accuracy =</span> <span class="dv">1</span>),</span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">name     =</span> <span class="st">"False alarm rate</span><span class="sc">\n</span><span class="st">(inc_67 share)"</span></span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">title    =</span> <span class="st">"False Alarm Rate of Fire Incidents by Census Tract"</span>,</span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Share of incidents with primary code 7"</span>,</span>
+<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption  =</span> <span class="st">"Tracts with no incidents shown in grey."</span></span>
+<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span>                        </span>
+<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"right"</span>,</span>
+<span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title      =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>)</span>
+<span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Final_Appendix_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Interpretation</strong></p>
+<p>This map shows the spatial distribution of false alarms across Philadelphia census tracts. Each tract is shaded according to the share of incidents classified as false alarms (primary code 7). Darker purple areas represent neighborhoods where false alarms make up a larger proportion of fire responses, while lighter areas exhibit lower false-alarm activity. Tracts with no recorded incidents during the study period are shown in grey. The pattern highlights substantial geographic variation: several central and high-density neighborhoods display elevated false-alarm rates, whereas some peripheral areas show relatively fewer false responses.</p>
+</section>
+<section id="pie-chart-true-fire-vs-false-alarm" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="pie-chart-true-fire-vs-false-alarm"><span class="header-section-number">3.2</span> Pie Chart: True Fire vs False Alarm</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(binary_summary, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> p, <span class="at">fill =</span> fire_type)) <span class="sc">+</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">width =</span> <span class="dv">1</span>, <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> p_label),</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">position =</span> <span class="fu">position_stack</span>(<span class="at">vjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">4</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_polar</span>(<span class="at">theta =</span> <span class="st">"y"</span>) <span class="sc">+</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>      <span class="st">"True Fire"</span>   <span class="ot">=</span> <span class="st">"lightblue"</span>,</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>      <span class="st">"False Alarm"</span> <span class="ot">=</span> <span class="st">"hotpink"</span></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"True Fire vs False Alarm Incidents"</span>,</span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill  =</span> <span class="st">"Incident Type"</span></span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(</span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">hjust =</span> <span class="fl">0.5</span>,</span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">14</span>,</span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a>      <span class="at">face =</span> <span class="st">"bold"</span></span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Final_Appendix_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Interpretation</strong></p>
+<p>The pie chart summarizes the composition of all fire-related incidents in Philadelphia during the study period. False alarms account for <strong>77%</strong> of all dispatches, while true fire events represent only <strong>23%</strong>. This large imbalance highlights a central operational challenge for the Fire Department: the vast majority of responses do <strong>not</strong> involve an actual fire, yet still require staff time, equipment movement, and system capacity. The high prevalence of false alarms underscores the importance of predictive modeling to help identify where and when such calls are most likely to occur.</p>
+</section>
+<section id="line-chart-false-alarm-rate-by-quarter" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="line-chart-false-alarm-rate-by-quarter"><span class="header-section-number">3.3</span> Line Chart: False Alarm Rate by Quarter</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>quarter_stats <span class="ot">&lt;-</span> fire_firetract <span class="sc">|&gt;</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_drop_geometry</span>() <span class="sc">|&gt;</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(quarter)) <span class="sc">|&gt;</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(quarter) <span class="sc">|&gt;</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_incidents  =</span> dplyr<span class="sc">::</span><span class="fu">n</span>(),</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">false_rate_7 =</span> <span class="fu">mean</span>(inc_new <span class="sc">==</span> <span class="dv">1</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(quarter_stats, <span class="fu">aes</span>(<span class="at">x =</span> quarter, <span class="at">y =</span> false_rate_7, <span class="at">group =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">"hotpink"</span>, <span class="at">size =</span> <span class="fl">1.4</span>) <span class="sc">+</span>           </span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"hotpink"</span>, <span class="at">size =</span> <span class="fl">3.8</span>) <span class="sc">+</span>             </span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">percent</span>(false_rate_7, <span class="at">accuracy =</span> <span class="dv">1</span>)),</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.6</span>,</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">4</span>,</span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"#2c3e50"</span>                   </span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(</span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">percent_format</span>(),</span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">limits =</span> <span class="fu">c</span>(<span class="fl">0.70</span>, <span class="fl">0.84</span>)              </span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"City-wide False Alarm Rate by Quarter"</span>,</span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Quarter"</span>,</span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"False Alarm Rate"</span></span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>) <span class="sc">+</span></span>
+<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb24-34"><a href="#cb24-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>)</span>
+<span id="cb24-35"><a href="#cb24-35" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Final_Appendix_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Interpretation</strong></p>
+<p>The quarterly trend shows modest but consistent seasonal variation in Philadelphia’s false alarm rate. Rates rise from <strong>75% in Q1</strong> to a peak of <strong>81% in Q3</strong>, before dropping to <strong>73% in Q4</strong>. This pattern suggests that false alarms become slightly more common during the summer months and decline toward the end of the year. Although the seasonal differences are not dramatic, they highlight that false alarm activity is not evenly distributed across the calendar, which may have implications for staffing, resource planning, and inspection scheduling.</p>
+</section>
+<section id="map-expired-alarm-certificates-share-by-census-tract" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="map-expired-alarm-certificates-share-by-census-tract"><span class="header-section-number">3.4</span> Map: Expired Alarm Certificates Share by Census Tract</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>bldg_cert_flag <span class="ot">&lt;-</span> bldg_cert <span class="sc">|&gt;</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(fire_alarm_status)) <span class="sc">|&gt;</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">alarm_expired =</span> <span class="fu">case_when</span>(</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>      fire_alarm_status <span class="sc">==</span> <span class="st">"Expired"</span> <span class="sc">~</span> <span class="dv">1</span>L,</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>      fire_alarm_status <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Active"</span>, <span class="st">"Deficient"</span>) <span class="sc">~</span> <span class="dv">0</span>L,</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_integer_</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>bldg_cert_flag <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(bldg_cert_flag, <span class="fu">st_crs</span>(philly_census))</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>bldg_tract <span class="ot">&lt;-</span> <span class="fu">st_join</span>(</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>  bldg_cert_flag,</span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>  philly_census <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">select</span>(GEOID),</span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">left =</span> <span class="cn">FALSE</span></span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>tract_expired <span class="ot">&lt;-</span> bldg_tract <span class="sc">|&gt;</span></span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">|&gt;</span></span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(alarm_expired)) <span class="sc">|&gt;</span></span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(GEOID) <span class="sc">|&gt;</span></span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_bldg_cert  =</span> <span class="fu">n</span>(),</span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">expired_share =</span> <span class="fu">mean</span>(alarm_expired),</span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>tract_map <span class="ot">&lt;-</span> philly_census_alarm <span class="sc">|&gt;</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">left_join</span>(tract_expired, <span class="at">by =</span> <span class="st">"GEOID"</span>)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(tract_map) <span class="sc">+</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> expired_share), <span class="at">color =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">option =</span> <span class="st">"magma"</span>,</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>,</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">percent_format</span>(<span class="at">accuracy =</span> <span class="dv">1</span>),</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">na.value =</span> <span class="st">"grey90"</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Expired Alarm Certificates Share"</span>,</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill  =</span> <span class="st">"Expired Share"</span></span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_sf</span>(<span class="at">datum =</span> <span class="cn">NA</span>) <span class="sc">+</span> </span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>) <span class="sc">+</span></span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>   <span class="fu">theme</span>(</span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title      =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">b =</span> <span class="dv">10</span>)),</span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text       =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title      =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.ticks      =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid      =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"white"</span>, <span class="at">color =</span> <span class="cn">NA</span>),</span>
+<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.margin     =</span> <span class="fu">margin</span>(<span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>)</span>
+<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Final_Appendix_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Interpretation</strong></p>
+<p>This map illustrates the share of buildings with <strong>expired fire alarm certifications</strong> across Philadelphia census tracts. Higher-expiry areas (shaded in darker purple) appear in several parts of North and West Philadelphia, as well as pockets of the Northeast. These neighborhoods tend to show a larger proportion of buildings whose annual alarm inspections are overdue, signaling potential maintenance challenges or compliance gaps. In contrast, many tracts in Center City and portions of South Philadelphia display lower expired shares, suggesting stronger inspection adherence. The geographic pattern indicates that certification compliance is not uniform across the city and may align with broader socioeconomic differences, telling us areas where targeted outreach or enforcement may be most needed.</p>
+</section>
+</section>
+<section id="modeling" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Modeling</h1>
+<section id="model1-weather-data" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="model1-weather-data"><span class="header-section-number">4.1</span> Model1: Weather Data</h2>
+<p>Model 1 is a baseline logistic regression that predicts whether an incident is a false alarm (<code>inc_new = 1</code>) using only <strong>weather conditions</strong> and <strong>building-level activity rates</strong> on the day of the call. The model includes:</p>
+<ul>
+<li><strong>Temperature</strong>: Daily average temperature</li>
+<li><strong>Precipitation</strong>: Total daily precipitation</li>
+<li><strong>Wind_Speed</strong>: Average daily wind speed</li>
+<li><strong>active_rate</strong>: Share of buildings in the tract with an active (valid) fire alarm certification</li>
+</ul>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>logit_model1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  inc_new <span class="sc">~</span> Temperature <span class="sc">+</span> Precipitation <span class="sc">+</span> Wind_Speed <span class="sc">+</span> active_rate,</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data   =</span> fire_firetract,</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>)</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Logistic Regression Model: Weather Predictors Only</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Variable</th>
+<th style="text-align: right;">Estimate</th>
+<th style="text-align: right;">Std. Error</th>
+<th style="text-align: right;">z value</th>
+<th style="text-align: right;">Pr(&gt;|z|)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">0.5846</td>
+<td style="text-align: right;">0.0536</td>
+<td style="text-align: right;">10.91</td>
+<td style="text-align: right;">0.000000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Temperature</td>
+<td style="text-align: right;">0.0101</td>
+<td style="text-align: right;">0.0005</td>
+<td style="text-align: right;">18.64</td>
+<td style="text-align: right;">0.000000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Precipitation</td>
+<td style="text-align: right;">18.5156</td>
+<td style="text-align: right;">5.0734</td>
+<td style="text-align: right;">3.65</td>
+<td style="text-align: right;">0.000263</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Wind_Speed</td>
+<td style="text-align: right;">0.0034</td>
+<td style="text-align: right;">0.0023</td>
+<td style="text-align: right;">1.44</td>
+<td style="text-align: right;">0.151000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">active_rate</td>
+<td style="text-align: right;">0.1182</td>
+<td style="text-align: right;">0.0810</td>
+<td style="text-align: right;">1.46</td>
+<td style="text-align: right;">0.145000</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Logit Model 1 serves as the baseline specification, incorporating only weather variables and the building-level alarm compliance rate to predict whether an incident is a false alarm. The model’s estimates indicate statistically significant effects for temperature and precipitation, suggesting that warmer days and days with measurable precipitation are associated with a higher likelihood of false alarms. In contrast, wind speed and the active certification rate do not reach conventional significance levels in this simplified model. Overall model fit is modest, with limited explanatory power relative to later specifications that incorporate socioeconomic, spatial, and temporal predictors. As expected for a parsimonious model, it captures only a small share of the variation in incident outcomes and primarily functions as a reference point against which the performance gains of more complete models can be assessed.</p>
+</section>
+<section id="model-2-socioeconomic" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="model-2-socioeconomic"><span class="header-section-number">4.2</span> Model 2: Socioeconomic</h2>
+<p>Model 2 extends the baseline specification by incorporating census tract–level socioeconomic characteristics to capture structural factors that may influence false alarm patterns. In addition to the weather variables and active building certification rates from Model 1, this model includes:</p>
+<ul>
+<li><p><strong>median_income:</strong> Median household income, reflecting economic resources and potential differences in building conditions. 232qq</p></li>
+<li><p><strong>ba_rate:</strong> Share of adults holding a bachelor’s degree, used as a proxy for neighborhood socio-demographic composition.</p></li>
+<li><p><strong>black_share:</strong> Percentage of Black residents in the tract, capturing racial composition patterns relevant for equity analysis.</p></li>
+<li><p><strong>unemployment_rate:</strong> Local unemployment levels, which may correlate with neighborhood stressors or reporting behaviors.</p></li>
+</ul>
+<p>These variables allow the model to account for broader socioeconomic context rather than relying solely on incident-day environmental factors.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>logit_model2 <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  inc_new <span class="sc">~</span> Temperature <span class="sc">+</span> Precipitation <span class="sc">+</span> Wind_Speed <span class="sc">+</span> active_rate <span class="sc">+</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    median_income <span class="sc">+</span> ba_rate <span class="sc">+</span> black_share <span class="sc">+</span> unemployment_rate,</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data   =</span> fire_firetract,</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>)</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Logit Model 2: With Socioeconomic Predictors</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Variable</th>
+<th style="text-align: right;">Estimate</th>
+<th style="text-align: right;">Std. Error</th>
+<th style="text-align: right;">z value</th>
+<th style="text-align: right;">Pr(&gt;|z|)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">-1.4270</td>
+<td style="text-align: right;">0.0740</td>
+<td style="text-align: right;">-19.29</td>
+<td style="text-align: right;">0.00e+00</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Temperature</td>
+<td style="text-align: right;">0.0091</td>
+<td style="text-align: right;">0.0006</td>
+<td style="text-align: right;">15.87</td>
+<td style="text-align: right;">0.00e+00</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Precipitation</td>
+<td style="text-align: right;">18.3240</td>
+<td style="text-align: right;">5.2965</td>
+<td style="text-align: right;">3.46</td>
+<td style="text-align: right;">5.41e-04</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Wind_Speed</td>
+<td style="text-align: right;">0.0039</td>
+<td style="text-align: right;">0.0025</td>
+<td style="text-align: right;">1.57</td>
+<td style="text-align: right;">1.16e-01</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">active_rate</td>
+<td style="text-align: right;">0.4680</td>
+<td style="text-align: right;">0.0888</td>
+<td style="text-align: right;">5.27</td>
+<td style="text-align: right;">1.00e-07</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">median_income</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">5.10</td>
+<td style="text-align: right;">3.00e-07</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ba_rate</td>
+<td style="text-align: right;">0.0554</td>
+<td style="text-align: right;">0.0013</td>
+<td style="text-align: right;">43.32</td>
+<td style="text-align: right;">0.00e+00</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">black_share</td>
+<td style="text-align: right;">0.0139</td>
+<td style="text-align: right;">0.0004</td>
+<td style="text-align: right;">36.52</td>
+<td style="text-align: right;">0.00e+00</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">unemployment_rate</td>
+<td style="text-align: right;">0.0142</td>
+<td style="text-align: right;">0.0021</td>
+<td style="text-align: right;">6.91</td>
+<td style="text-align: right;">0.00e+00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Model 2 expands the baseline specification by incorporating socioeconomic characteristics of each census tract, and its performance improves substantially relative to Model 1. Education level (ba_rate), Black population share, and median income are highly statistically significant, indicating that false alarm patterns are strongly associated with underlying demographic and socioeconomic conditions. The model’s coefficients suggest that areas with higher educational attainment and larger Black population shares exhibit higher probabilities of false alarms, even after controlling for weather and building-level compliance activity. Compared with the baseline model, the residual deviance decreases from 67133 to 59730 and the AIC drops from 67143 to 59748, indicating a markedly better fit. These gains show that socioeconomic context meaningfully contributes to predicting false alarms and helps explain variation that weather alone cannot.</p>
+</section>
+<section id="model-3-full-model" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="model-3-full-model"><span class="header-section-number">4.3</span> Model 3: Full Model</h2>
+<p>Model 3 extends the previous specifications by incorporating temporal patterns and spatial accessibility factors that may influence the likelihood of a false alarm. In addition to weather, building characteristics, and neighborhood socioeconomic indicators, this model includes:</p>
+<ul>
+<li><p><strong>is_weekend</strong> : Whether the incident occurred on a weekend, capturing changes in occupancy, human activity, and reporting behavior between weekdays and weekends.</p></li>
+<li><p><strong>quarter</strong>: A categorical indicator for seasonal variation (Q1–Q4), allowing the model to account for cyclical patterns in alarm activity across the year.</p></li>
+<li><p><strong>near_station_200m</strong>: A binary variable identifying incidents that occur within 200 meters of a fire station, representing potential differences in response environments and built-environment characteristics around stations.</p></li>
+<li><p><strong>dist_cityhall_km</strong>: The distance from the incident location to Philadelphia City Hall, serving as a proxy for urban centrality and potential differences between high-density downtown areas and more peripheral neighborhoods.</p></li>
+</ul>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>logit_model3 <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  inc_new <span class="sc">~</span> Temperature <span class="sc">+</span> Precipitation <span class="sc">+</span> Wind_Speed <span class="sc">+</span> active_rate <span class="sc">+</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    median_income <span class="sc">+</span> ba_rate <span class="sc">+</span> black_share <span class="sc">+</span> unemployment_rate <span class="sc">+</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    is_weekend <span class="sc">+</span> quarter <span class="sc">+</span> near_station_200m <span class="sc">+</span> dist_cityhall_km,</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">data   =</span> fire_firetract,</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>)</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Logistic Regression Model: Full Model</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Variable</th>
+<th style="text-align: right;">Estimate</th>
+<th style="text-align: right;">Std. Error</th>
+<th style="text-align: right;">z value</th>
+<th style="text-align: right;">Pr(&gt;|z|)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">-1.2325</td>
+<td style="text-align: right;">0.0810</td>
+<td style="text-align: right;">-15.21</td>
+<td style="text-align: right;">0.00e+00</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Temperature</td>
+<td style="text-align: right;">0.0072</td>
+<td style="text-align: right;">0.0010</td>
+<td style="text-align: right;">7.45</td>
+<td style="text-align: right;">0.00e+00</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Precipitation</td>
+<td style="text-align: right;">17.4394</td>
+<td style="text-align: right;">5.2598</td>
+<td style="text-align: right;">3.32</td>
+<td style="text-align: right;">9.14e-04</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Wind_Speed</td>
+<td style="text-align: right;">0.0041</td>
+<td style="text-align: right;">0.0025</td>
+<td style="text-align: right;">1.65</td>
+<td style="text-align: right;">9.92e-02</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">active_rate</td>
+<td style="text-align: right;">0.4676</td>
+<td style="text-align: right;">0.0888</td>
+<td style="text-align: right;">5.27</td>
+<td style="text-align: right;">1.00e-07</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">median_income</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">5.35</td>
+<td style="text-align: right;">1.00e-07</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ba_rate</td>
+<td style="text-align: right;">0.0546</td>
+<td style="text-align: right;">0.0014</td>
+<td style="text-align: right;">39.33</td>
+<td style="text-align: right;">0.00e+00</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">black_share</td>
+<td style="text-align: right;">0.0138</td>
+<td style="text-align: right;">0.0004</td>
+<td style="text-align: right;">35.71</td>
+<td style="text-align: right;">0.00e+00</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">unemployment_rate</td>
+<td style="text-align: right;">0.0137</td>
+<td style="text-align: right;">0.0021</td>
+<td style="text-align: right;">6.66</td>
+<td style="text-align: right;">0.00e+00</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">is_weekend</td>
+<td style="text-align: right;">-0.0649</td>
+<td style="text-align: right;">0.0225</td>
+<td style="text-align: right;">-2.88</td>
+<td style="text-align: right;">3.92e-03</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">quarterQ2</td>
+<td style="text-align: right;">-0.0305</td>
+<td style="text-align: right;">0.0369</td>
+<td style="text-align: right;">-0.83</td>
+<td style="text-align: right;">4.09e-01</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">quarterQ3</td>
+<td style="text-align: right;">0.0838</td>
+<td style="text-align: right;">0.0441</td>
+<td style="text-align: right;">1.90</td>
+<td style="text-align: right;">5.76e-02</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">quarterQ4</td>
+<td style="text-align: right;">-0.1713</td>
+<td style="text-align: right;">0.0313</td>
+<td style="text-align: right;">-5.47</td>
+<td style="text-align: right;">0.00e+00</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">near_station_200m</td>
+<td style="text-align: right;">-0.1063</td>
+<td style="text-align: right;">0.0308</td>
+<td style="text-align: right;">-3.45</td>
+<td style="text-align: right;">5.66e-04</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">dist_cityhall_km</td>
+<td style="text-align: right;">-0.0044</td>
+<td style="text-align: right;">0.0022</td>
+<td style="text-align: right;">-1.98</td>
+<td style="text-align: right;">4.75e-02</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The full model delivers the strongest predictive performance among the three specifications. Adding socioeconomic factors, temporal indicators, and spatial proximity variables substantially improves model fit, reducing deviance and lowering AIC compared to Models 1 and 2. Several predictors show significant associations with false-alarm likelihood, most notably education level, racial composition, unemployment rate, and building certification activity while weather variables retain moderate predictive power. Temporal effects are modest but present, with higher false-alarm rates in Q3 and lower rates in Q4. Spatial features contribute additional explanatory value, as calls nearer to fire stations and farther from Center City are slightly less likely to be false alarms. Overall, the full model captures the most complete set of behavioral, environmental, and geographic signals and therefore serves as the best-performing specification for subsequent interpretation and policy analysis.</p>
+</section>
+<section id="model-evaluation" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="model-evaluation"><span class="header-section-number">4.4</span> Model Evaluation</h2>
+<section id="auc-comparison" class="level3" data-number="4.4.1">
+<h3 data-number="4.4.1" class="anchored" data-anchor-id="auc-comparison"><span class="header-section-number">4.4.1</span> AUC Comparison</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>dat1 <span class="ot">&lt;-</span> <span class="fu">model.frame</span>(logit_model1) </span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>p1   <span class="ot">&lt;-</span> <span class="fu">predict</span>(logit_model1, <span class="at">type =</span> <span class="st">"response"</span>)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>roc1 <span class="ot">&lt;-</span> <span class="fu">roc</span>(dat1<span class="sc">$</span>inc_new, p1)</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>auc1 <span class="ot">&lt;-</span> <span class="fu">auc</span>(roc1)</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>dat2 <span class="ot">&lt;-</span> <span class="fu">model.frame</span>(logit_model2)</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>p2   <span class="ot">&lt;-</span> <span class="fu">predict</span>(logit_model2, <span class="at">type =</span> <span class="st">"response"</span>)</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>roc2 <span class="ot">&lt;-</span> <span class="fu">roc</span>(dat2<span class="sc">$</span>inc_new, p2)</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>auc2 <span class="ot">&lt;-</span> <span class="fu">auc</span>(roc2)</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>dat3 <span class="ot">&lt;-</span> <span class="fu">model.frame</span>(logit_model3)</span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>p3   <span class="ot">&lt;-</span> <span class="fu">predict</span>(logit_model3, <span class="at">type =</span> <span class="st">"response"</span>)</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>roc3 <span class="ot">&lt;-</span> <span class="fu">roc</span>(dat3<span class="sc">$</span>inc_new, p3)</span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>auc3 <span class="ot">&lt;-</span> <span class="fu">auc</span>(roc3)</span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">model =</span> <span class="fu">c</span>(<span class="st">"logit_model1"</span>, <span class="st">"logit_model2"</span>, <span class="st">"logit_model3"</span>),</span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">AUC   =</span> <span class="fu">c</span>(auc1, auc2, auc3)</span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>         model       AUC
+1 logit_model1 0.5539505
+2 logit_model2 0.6703993
+3 logit_model3 0.6720569</code></pre>
+</div>
+</div>
+<p>Across the three logistic regression specifications, predictive performance improves steadily as additional structural, socioeconomic, and temporal features are introduced. Model 1 achieves an AUC of <strong>0.554</strong>, indicating very limited predictive power and only marginal improvement over random guessing. Adding socioeconomic variables in Model 2 substantially increases the AUC to <strong>0.670</strong>, suggesting that neighborhood‐level demographic and income patterns provide meaningful signal in distinguishing false alarms from true fire events. The full model (Model 3), which incorporates temporal indicators, proximity to fire stations, and distance to downtown, yields the highest AUC of <strong>0.672</strong>. Although the improvement over Model 2 is modest, it indicates that these operational and spatial predictors add incremental information beyond weather and socioeconomic structure.</p>
+</section>
+<section id="roc-curve" class="level3" data-number="4.4.2">
+<h3 data-number="4.4.2" class="anchored" data-anchor-id="roc-curve"><span class="header-section-number">4.4.2</span> ROC Curve</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(roc1, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">main =</span> <span class="st">"ROC Curves for Logit Models"</span>)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(roc2, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(roc3, <span class="at">col =</span> <span class="st">"purple"</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"bottomright"</span>,</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">"Model 1"</span>, <span class="st">"Model 2"</span>, <span class="st">"Model 3"</span>),</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">col    =</span> <span class="fu">c</span>(<span class="st">"blue"</span>, <span class="st">"red"</span>, <span class="st">"purple"</span>),</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">lwd    =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Final_Appendix_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The ROC curves visualize how each model balances sensitivity and specificity across all possible thresholds. Model 1 shows the weakest discrimination, with a curve only slightly above the 45-degree no-skill line. Model 2 improves substantially once socioeconomic characteristics are added, producing a visibly steeper curve. Model 3 offers a modest gain: adding temporal factors and spatial proximity variables produces the strongest curve overall, indicating the most consistent ability to distinguish false alarms from real incidents across thresholds.</p>
+</section>
+<section id="k-fold-cross-validation" class="level3" data-number="4.4.3">
+<h3 data-number="4.4.3" class="anchored" data-anchor-id="k-fold-cross-validation"><span class="header-section-number">4.4.3</span> K-fold Cross Validation</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>fire_cv <span class="ot">&lt;-</span> fire_firetract <span class="sc">|&gt;</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_drop_geometry</span>() <span class="sc">|&gt;</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="fu">ifelse</span>(inc_new <span class="sc">==</span> <span class="dv">1</span>, <span class="st">"FalseAlarm"</span>, <span class="st">"RealIncident"</span>),</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="fu">factor</span>(y, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"FalseAlarm"</span>, <span class="st">"RealIncident"</span>))</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>    y,</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>    Temperature, Precipitation, Wind_Speed, active_rate,</span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>    median_income, ba_rate, black_share, unemployment_rate,</span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>    is_weekend, quarter, near_station_200m, dist_cityhall_km</span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">drop_na</span>()</span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a>train_control <span class="ot">&lt;-</span> <span class="fu">trainControl</span>(</span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">"cv"</span>,</span>
+<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">number =</span> <span class="dv">5</span>,</span>
+<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">classProbs =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">summaryFunction =</span> twoClassSummary</span>
+<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb33-23"><a href="#cb33-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-24"><a href="#cb33-24" aria-hidden="true" tabindex="-1"></a>logit_cv_model <span class="ot">&lt;-</span> <span class="fu">train</span>(</span>
+<span id="cb33-25"><a href="#cb33-25" aria-hidden="true" tabindex="-1"></a>  y <span class="sc">~</span> .,</span>
+<span id="cb33-26"><a href="#cb33-26" aria-hidden="true" tabindex="-1"></a>  <span class="at">data      =</span> fire_cv,</span>
+<span id="cb33-27"><a href="#cb33-27" aria-hidden="true" tabindex="-1"></a>  <span class="at">method    =</span> <span class="st">"glm"</span>,</span>
+<span id="cb33-28"><a href="#cb33-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">family    =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>),</span>
+<span id="cb33-29"><a href="#cb33-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">trControl =</span> train_control,</span>
+<span id="cb33-30"><a href="#cb33-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">metric    =</span> <span class="st">"ROC"</span></span>
+<span id="cb33-31"><a href="#cb33-31" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb33-32"><a href="#cb33-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-33"><a href="#cb33-33" aria-hidden="true" tabindex="-1"></a>logit_cv_model</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Generalized Linear Model 
+
+59340 samples
+   12 predictor
+    2 classes: 'FalseAlarm', 'RealIncident' 
+
+No pre-processing
+Resampling: Cross-Validated (5 fold) 
+Summary of sample sizes: 47472, 47473, 47471, 47472, 47472 
+Resampling results:
+
+  ROC       Sens       Spec      
+  0.671565  0.9858302  0.06613265</code></pre>
+</div>
+</div>
+<p>To assess the stability of the full logistic regression model, we conduct 5-fold cross-validation on the training data. The cross-validated ROC (0.672) is nearly identical to the in-sample ROC reported earlier, indicating that the model’s predictive performance is highly stable across different data splits. The very high sensitivity and low specificity largely reflect the substantial class imbalance in the outcome (false alarms ≈ 77%). Because classification thresholds are not yet optimized at this stage, these values are not used for model selection; instead, cross-validation primarily confirms that the model generalizes consistently.</p>
+</section>
+<section id="odds-ratios-for-model-3" class="level3" data-number="4.4.4">
+<h3 data-number="4.4.4" class="anchored" data-anchor-id="odds-ratios-for-model-3"><span class="header-section-number">4.4.4</span> Odds Ratios for Model 3</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>or_table_simple <span class="ot">&lt;-</span> <span class="fu">tidy</span>(logit_model3) <span class="sc">%&gt;%</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">odds_ratio =</span> <span class="fu">round</span>(<span class="fu">exp</span>(estimate), <span class="dv">3</span>)</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">Variable =</span> term,</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">Odds_Ratio =</span> odds_ratio</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(</span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>  or_table_simple,</span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Odds Ratios for Logit Model 3"</span>,</span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">align =</span> <span class="st">"lr"</span></span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Odds Ratios for Logit Model 3</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Variable</th>
+<th style="text-align: right;">Odds_Ratio</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">0.292</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Temperature</td>
+<td style="text-align: right;">1.007</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Precipitation</td>
+<td style="text-align: right;">37483869.597</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Wind_Speed</td>
+<td style="text-align: right;">1.004</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">active_rate</td>
+<td style="text-align: right;">1.596</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">median_income</td>
+<td style="text-align: right;">1.000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ba_rate</td>
+<td style="text-align: right;">1.056</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">black_share</td>
+<td style="text-align: right;">1.014</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">unemployment_rate</td>
+<td style="text-align: right;">1.014</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">is_weekend</td>
+<td style="text-align: right;">0.937</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">quarterQ2</td>
+<td style="text-align: right;">0.970</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">quarterQ3</td>
+<td style="text-align: right;">1.087</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">quarterQ4</td>
+<td style="text-align: right;">0.843</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">near_station_200m</td>
+<td style="text-align: right;">0.899</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">dist_cityhall_km</td>
+<td style="text-align: right;">0.996</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The odds‐ratio table summarizes how each predictor influences the likelihood that an incident is classified as a false alarm after controlling for all other variables. Weather variables, particularly temperature and precipitation, remain strong predictors, with higher temperatures and any measurable precipitation increasing the likelihood of a false alarm. Building compliance also matters: tracts with higher active certification rates show significantly greater odds of false alarms, consistent with patterns observed in the earlier models. Socioeconomic context continues to contribute meaningful signal, higher educational attainment, a larger Black population share, and higher unemployment are all associated with elevated false-alarm odds, even after controlling for weather and temporal factors. Temporal features add smaller but still interpretable effects: false alarms are slightly less likely on weekends and in Q4, and marginally more likely in Q3. Finally, spatial accessibility plays a role: incidents occurring near a fire station (&lt;200m) or farther from Center City show modestly reduced odds of being false alarms. Together, these results suggest that false-alarm activity reflects an interaction of environmental conditions, neighborhood characteristics, and system operations.</p>
+</section>
+</section>
+<section id="threshold-selection" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="threshold-selection"><span class="header-section-number">4.5</span> Threshold Selection</h2>
+<p>In a logistic regression model, predicted values represent the probability that an incident is a false alarm. To convert these probabilities into binary classifications (false alarm vs.&nbsp;real incident), a decision threshold must be chosen. Different thresholds produce different trade-offs between sensitivity (true positive rate) and specificity (true negative rate).</p>
+<p>We evaluated two candidate thresholds—0.9 and 0.4—to illustrate how classification behavior changes under different risk tolerances.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>get_metrics <span class="ot">&lt;-</span> <span class="cf">function</span>(th) {</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  pred <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(p3 <span class="sc">&gt;=</span> th, <span class="dv">1</span>L, <span class="dv">0</span>L)</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  cm   <span class="ot">&lt;-</span> <span class="fu">table</span>(<span class="at">Actual =</span> dat3<span class="sc">$</span>inc_new, <span class="at">Pred =</span> pred)</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>  TN <span class="ot">&lt;-</span> cm[<span class="st">"0"</span>,<span class="st">"0"</span>]; FP <span class="ot">&lt;-</span> cm[<span class="st">"0"</span>,<span class="st">"1"</span>]</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>  FN <span class="ot">&lt;-</span> cm[<span class="st">"1"</span>,<span class="st">"0"</span>]; TP <span class="ot">&lt;-</span> cm[<span class="st">"1"</span>,<span class="st">"1"</span>]</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(</span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">threshold  =</span> th,</span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">TN  =</span> <span class="fu">as.numeric</span>(TN),</span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">FP  =</span> <span class="fu">as.numeric</span>(FP),</span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">FN  =</span> <span class="fu">as.numeric</span>(FN),</span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">TP  =</span> <span class="fu">as.numeric</span>(TP),</span>
+<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">accuracy   =</span> (TP <span class="sc">+</span> TN) <span class="sc">/</span> <span class="fu">sum</span>(cm),</span>
+<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">sensitivity =</span> TP <span class="sc">/</span> (TP <span class="sc">+</span> FN), </span>
+<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">specificity =</span> TN <span class="sc">/</span> (TN <span class="sc">+</span> FP), </span>
+<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">fpr        =</span> FP <span class="sc">/</span> (FP <span class="sc">+</span> TN)   </span>
+<span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb36-19"><a href="#cb36-19" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb36-20"><a href="#cb36-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-21"><a href="#cb36-21" aria-hidden="true" tabindex="-1"></a>metrics <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
+<span id="cb36-22"><a href="#cb36-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_metrics</span>(<span class="fl">0.9</span>),</span>
+<span id="cb36-23"><a href="#cb36-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_metrics</span>(<span class="fl">0.4</span>)</span>
+<span id="cb36-24"><a href="#cb36-24" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb36-25"><a href="#cb36-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-26"><a href="#cb36-26" aria-hidden="true" tabindex="-1"></a>metrics</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 9
+  threshold    TN    FP    FN    TP accuracy sensitivity specificity    fpr
+      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;  &lt;dbl&gt;
+1       0.9 13116   493 42024  3707    0.284      0.0811     0.964   0.0362
+2       0.4    38 13571    23 45708    0.771      0.999      0.00279 0.997 </code></pre>
+</div>
+</div>
+<p><strong>Interpretation</strong></p>
+<p>Threshold = 0.9 <strong>(Conservative)</strong> A threshold of 0.9 classifies an incident as a false alarm only when the predicted probability is extremely high.</p>
+<p><strong>Very high specificity (96.4%):</strong> almost all true incidents are correctly labeled as real.</p>
+<p><strong>Very low sensitivity (8.1%):</strong> the model fails to identify most false alarms (42,024 false negatives).</p>
+<p>This threshold minimizes false positives but misses the vast majority of false alarms. This setting is appropriate in contexts where misclassifying a real emergency as a false alarm is unacceptable, such as prioritizing safety or enforcement on only the most extreme cases.</p>
+<p>Threshold = 0.4 <strong>(Aggressive)</strong> A threshold of 0.4 classifies an incident as a false alarm when the predicted probability exceeds 40%.</p>
+<p><strong>Extremely high sensitivity (99.95%):</strong> nearly all false alarms are detected (only 23 missed).</p>
+<p><strong>Very low specificity (0.28%):</strong> almost all true incidents are incorrectly labeled as false alarms.</p>
+<p>This threshold identifies almost every false alarm but also generates a large number of false positives. This setting is useful in contexts where the goal is to maximize detection, such as broad preventive inspections or outreach.</p>
+</section>
+</section>
+<section id="recommendations" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Recommendations</h1>
+<p>Threshold should be chosen based on capacity and goals. Based on the model comparison and operational needs, we recommend adopting a <strong>relatively aggressive threshold</strong> as the decision rule to catch more possible false alarms. Selecting a lower threshold does not imply that the Fire Department will <em>ignore</em> these calls; rather, it allows the Department to differentiate levels of risk more effectively. When the model indicates a high likelihood of a false alarm, fire crews would still respond, but they can deploy a <strong>lighter response package</strong>, smaller teams, fewer apparatus, and reduced resource commitment. This minimizes unnecessary operational costs, reduces roadway risk, and preserves capacity for true emergencies. In addition, for calls predicted as likely false alarms, response teams can carry <strong>educational materials, communication guidelines, and basic fire-alarm inspection toolkits</strong>, allowing them to both address the call and engage with property managers about system maintenance and common causes of false activations.</p>
+<p>Beyond operational adjustments, we also recommend a set of longer-term policy strategies.</p>
+<p>First, the City should strengthen <strong>mandatory fire-alarm inspection and compliance enforcement</strong>. For buildings with repeated false alarms or expired certificates, a tiered penalty structure or more frequent re-inspections may create stronger incentives for timely system maintenance.</p>
+<p>Second, the City should expand <strong>public and community education</strong> efforts. The Fire Department could host workshops, property-manager trainings, or community sessions on alarm maintenance, common malfunction causes, and mitigation strategies. Targeted outreach may be especially effective in neighborhoods or buildings with historically high false-alarm rates.</p>
+</section>
+<section id="limitationsnext-steps" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Limitations&amp;Next Steps</h1>
+<section id="limitations" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="limitations"><span class="header-section-number">6.1</span> <strong>Limitations</strong></h2>
+<p>Although the model provides meaningful predictive ability, it still faces several important limitations. First, the data contain gaps and inconsistencies, for example, missing or outdated fire-alarm certificate records and uneven data quality across neighborhoods which can reduce model stability. Second, because the current model is binary, it can only classify alarms as “false” vs.&nbsp;“not false,” and cannot distinguish different levels of fire risk. No matter how high or low the predicted probability is, the final decision still requires using a single threshold, which restricts how much nuance the model can express. In addition, any misclassification carries real consequences: mislabeling a true fire as a false alarm could delay response, while treating a likely false alarm as high risk may burden residents and property owners and potentially exacerbate existing enforcement inequities. For these reasons, the model should be used as a decision-support tool rather than a substitute for professional judgment.</p>
+</section>
+<section id="improvement-possibilities" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="improvement-possibilities"><span class="header-section-number">6.2</span> <strong>Improvement Possibilities</strong></h2>
+<p>With richer data, more development time, or additional funding, the model could be expanded into a <strong>multi-tier risk classification system</strong>, instead of a simple binary prediction. For example, alarms could be grouped into four levels:</p>
+<ul>
+<li><p>Tier 1 = high emergency (very likely real fire)</p></li>
+<li><p>Tier 2 = moderate risk (standard response)</p></li>
+<li><p>Tier 3 = minor risk (non-emergency conditions possible)</p></li>
+<li><p>Tier 4 = high-probability false alarm (light response package)</p></li>
+</ul>
+<p>Achieving this would require integrating additional features, such as alarm device age, building maintenance histories, humidity/smoke environment data, renovation activity, and more granular spatial patterns. These richer inputs would allow the model to shift from hard thresholding to continuous risk scoring and tiered operational strategies, enabling more precise allocation of fire-department resources. Future enhancements could also include multiclass models or time-series analysis to support an even more nuanced and safety-balanced dispatch framework.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

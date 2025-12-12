@@ -23,6 +23,16 @@ website:
             text: week 5
           - href: weekly-notes/week-06-notes.qmd
             text: week 6
+          - href: weekly-notes/week-07-notes.qmd
+            text: week 7
+          - href: weekly-notes/week-09-notes.qmd
+            text: week 9
+          - href: weekly-notes/week-10-notes.qmd
+            text: week 10
+          - href: weekly-notes/week-11-notes.qmd
+            text: week 11
+          - href: weekly-notes/week-12-notes.qmd
+            text: week 12
 
       - text: Labs
         menu:
@@ -35,13 +45,18 @@ website:
           - href: assignments/assignments2/assignment2_template.qmd
             text: "Assignment 2: Spatial Analysis and Visualization"
           - href: assignments/midterm/Yu_Sihan_Appendix.qmd
-            text: "Midterm: Philadelphia Housing Model (Appendqix)"
+            text: "Midterm: Philadelphia Housing Model (Appendix)"
           - href: assignments/midterm/Yu_Sihan_Presentation.qmd
             text: "Midterm presentation: Philadelphia Housing Model"
           - href: assignments/assignments4/assignment4.qmd
             text: "Assignment 4: Spatial Predictive Analysis"
-          - href: assignments/assignments5/assignments5_1.qmd
+          - href: assignments/assignments5/assignments5.qmd
             text: "Assignment 5: Space-Time Prediction of Bike Share Demand"
+          - href: assignments/Final/Final_Appendix/Final_Appendix.qmd
+            text: "Final: Fire Alarm Prediction (Appendix)"
+          - href: assignments/Final/Final_Presentation/presentation/Final_Presentation.qmd
+            text: "Final presentation: Fire Alarm Prediction"            
+
 
            
 

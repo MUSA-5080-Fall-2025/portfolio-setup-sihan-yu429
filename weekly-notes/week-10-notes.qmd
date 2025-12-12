@@ -1,0 +1,38 @@
+---
+title: "Week 10 Notes – Logistic Regression for Binary Outcomes"
+date: "2025-11-10"
+---
+
+## Key Concepts Learned
+- Logistic regression is used when the outcome is binary (yes/no).
+- Linear regression is inappropriate for binary outcomes because predictions can fall outside 0–1 and violate assumptions.
+- Logistic regression models probabilities using the logistic function.
+- Coefficients are interpreted on the log-odds scale; exponentiated coefficients become odds ratios.
+- A probability threshold (such as 0.5) converts predicted probabilities into binary decisions.
+- Confusion matrices summarize model performance using metrics like sensitivity, specificity, and precision.
+- ROC curves and AUC evaluate overall discrimination across all possible thresholds.
+- A model may perform differently across demographic groups, even when overall accuracy is high.
+
+## Coding Techniques
+- Fit logistic regression using `glm(..., family = "binomial")`.
+- Use `predict(model, type = "response")` to obtain predicted probabilities.
+- Create confusion matrices to calculate metrics such as sensitivity and specificity.
+- Loop through multiple thresholds to evaluate different tradeoffs.
+- Use `pROC::roc()` to create ROC curves and compute AUC.
+
+## Questions & Challenges
+- How to choose the optimal threshold for real-world decision making.
+- Interpreting odds ratios correctly when predictors are on different scales.
+- Understanding how different threshold choices influence false positives and false negatives.
+- Assessing equity and subgroup performance in a structured way.
+
+## Connections to Policy
+- Logistic regression is widely used for risk assessment in criminal justice, health, and public services.
+- Threshold decisions determine who receives interventions or additional scrutiny.
+- Policymakers must consider the different costs of false positives versus false negatives.
+- Fairness analysis is essential to ensure that models do not disproportionately burden certain groups.
+
+## Reflection
+- Logistic regression reframed prediction for me as a probability and decision problem, not just a statistical fit.
+- Threshold selection is fundamentally a policy choice, not a purely statistical one.
+- I will be more intentional about documenting threshold decisions and considering equity impacts in future analyses.

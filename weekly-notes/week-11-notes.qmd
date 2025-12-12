@@ -1,0 +1,38 @@
+---
+title: "Week 11 Notes – Classification, ROC, and Decision Thresholds"
+date: "2025-11-17"
+---
+
+## Key Concepts Learned
+- Logistic regression produces probabilities, not discrete categories.
+- Classification requires choosing a decision threshold to turn probabilities into yes/no predictions.
+- Confusion matrices summarize four types of outcomes: true positives, false positives, true negatives, and false negatives.
+- Performance metrics—accuracy, sensitivity, specificity, precision, recall, F1—capture different aspects of model quality.
+- ROC curves show tradeoffs between sensitivity and specificity across all possible thresholds.
+- AUC measures overall model discrimination independent of a specific threshold.
+- Base rates and class imbalance can distort accuracy and require alternative evaluation metrics.
+- Choosing a threshold is a policy decision, not a statistical one, because different types of errors have different real-world costs.
+
+## Coding Techniques
+- Using `predict(..., type = "response")` to generate predicted probabilities.
+- Manually converting probabilities to classifications using various thresholds.
+- Constructing confusion matrices and computing metrics for each threshold.
+- Using ROC and AUC functions to evaluate model performance across thresholds.
+- Creating tables or plots that compare metrics under different decision rules.
+
+## Questions & Challenges
+- How to determine the “best” threshold when costs of errors are not explicitly quantified.
+- Interpreting ROC curves beyond simply preferring higher AUC.
+- Evaluating how different thresholds affect resource allocation and public service delivery.
+- Translating statistical performance into operational decisions.
+
+## Connections to Policy
+- Threshold choices determine who gets flagged for inspection, services, enforcement, or support.
+- False positives and false negatives often have asymmetric consequences, requiring careful balancing.
+- AUC helps compare models, but policymakers must define acceptable tradeoffs.
+- Classification systems can influence equity outcomes depending on how errors impact different communities.
+
+## Reflection
+- This week emphasized that prediction is only the first step; decisions require judgment.
+- ROC analysis clarified that a single model can support many policy goals depending on the threshold.
+- I will pay more attention to documenting error tradeoffs and aligning threshold selection with policy priorities in future work.

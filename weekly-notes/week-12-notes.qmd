@@ -1,0 +1,39 @@
+---
+title: "Week 12 Notes – Neighborhood Trajectories and Sequence Analysis"
+date: "2025-11-24"
+---
+
+## Key Concepts Learned
+- Neighborhood change should be viewed as a dynamic process rather than a single snapshot.
+- Neighborhood states can be defined through clustering methods (e.g., k-means) for each time point.
+- A sequence for each neighborhood is created by stringing together its state across multiple years.
+- Sequence similarity metrics allow comparison of entire change trajectories.
+- Hierarchical clustering (such as Ward’s method) groups neighborhoods with similar developmental paths.
+- Mapping trajectory clusters reveals spatial patterns of stability, decline, or transformation.
+- This approach highlights both the pace and direction of neighborhood change.
+
+## Coding Techniques
+- Normalizing variables to make them comparable across years.
+- Using `kmeans()` to assign yearly neighborhood categories.
+- Reshaping data to wide format to build sequences.
+- Creating sequence objects with tools like `seqdef()` from sequence analysis packages.
+- Computing distance matrices using sequence similarity measures.
+- Applying hierarchical clustering to group neighborhoods into trajectory types.
+- Visualizing the spatial distribution of trajectory clusters on maps.
+
+## Questions & Challenges
+- Choosing the appropriate number of clusters for meaningful interpretation.
+- Understanding how parameter choices in sequence distance metrics influence results.
+- Translating trajectory groups into clear policy implications rather than descriptive labels.
+- Balancing statistical rigor with interpretability for community and policy audiences.
+
+## Connections to Policy
+- Different trajectory patterns imply distinct policy strategies: stabilization, investment, monitoring, or protection.
+- Sequence analysis reveals long-term processes that may be invisible in single-year data.
+- Policymakers can identify neighborhoods showing early signs of change or long-term stagnation.
+- Understanding trajectories supports more tailored and equitable urban interventions.
+
+## Reflection
+- This framework shifted my mindset from thinking about neighborhoods as fixed categories to understanding them as evolving stories.
+- Looking at sequences helps capture complexity—volatility, stability, and direction—all at once.
+- I can apply this approach in future projects by comparing long-term neighborhood patterns and grounding recommendations in multi-year trends.
